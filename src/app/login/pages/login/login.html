@@ -1,0 +1,115 @@
+<div class="login-content">
+    <div class="form-content">
+      @if (!isLoginMode()) {
+        <mat-card class="register-card" appearance="outlined">
+          <mat-card-header class="header-login">
+            <mat-icon
+              class="login-icon"
+              aria-hidden="false"
+              aria-label="login icon"
+              fontIcon="account_circle"
+            >
+            </mat-icon>
+            <h1>Registrate</h1>
+          </mat-card-header>
+        
+          <mat-card-content>
+            <form class="example-form">
+              <mat-form-field class="input-form">
+                <mat-label>Registre su E-mail</mat-label>
+                <input matInput #message maxlength="35" placeholder="rafaelargotez@gmail.com" required value=""/>
+                <mat-hint align="end">{{message.value.length}} / 35</mat-hint>
+              </mat-form-field>
+        
+              <mat-form-field class="input-form">
+                <mat-label>Registre su Contraseña</mat-label>
+                <input matInput #password maxlength="35" type="password" placeholder="******" required value="" />
+                <mat-hint align="end">{{password.value.length}} / 35</mat-hint>
+              </mat-form-field>
+              <mat-form-field class="input-form">
+                <mat-label>Confirmar su Contraseña</mat-label>
+                <input matInput #confirmPassword maxlength="35" type="password" placeholder="******" required value="" />
+                <mat-hint align="end">{{confirmPassword.value.length}} / 35</mat-hint>
+              </mat-form-field>
+      
+            </form>
+            <mat-card-actions>
+              <button matButton="elevated" class="btn-registrar">
+                 <span style="color: rgba(49, 48, 48, 0.785)"
+              >Registrar datos</span
+            >
+              </button>
+            </mat-card-actions>
+          </mat-card-content>
+          <span>¿Ya tienes una cuenta?<a href="#" (click)="changeModeLoginForm(); $event.preventDefault()"> Inicia sesión</a></span>
+        </mat-card>
+       
+      }
+      @else {
+      <mat-card class="example-card" appearance="outlined">
+        <mat-card-header class="header-login">
+          <mat-icon
+            class="login-icon"
+            aria-hidden="false"
+            aria-label="login icon"
+            fontIcon="account_circle"
+          >
+          </mat-icon>
+          <h1>Inicio de sesión</h1>
+        </mat-card-header>
+      
+        <mat-card-content>
+          <form class="example-form">
+            <mat-form-field class="input-form">
+              <mat-label>Ingrese su E-mail</mat-label>
+              <input matInput #message maxlength="35" placeholder="rafaelargotez@gmail.com" required value=""/>
+              <mat-hint align="end">{{message.value.length}} / 35</mat-hint>
+            </mat-form-field>
+      
+            <mat-form-field class="input-form">
+              <mat-label>Ingrese su Contraseña</mat-label>
+              <input matInput #password maxlength="35" type="password" placeholder="******" required value="" />
+              <mat-hint align="end">{{password.value.length}} / 35</mat-hint>
+            </mat-form-field>
+          </form>
+          <mat-card-actions>
+            <button matButton="elevated" class="btn-ingresar">
+               <span style="color: rgba(49, 48, 48, 0.785)"
+            >Iniciar sesión</span
+          >
+            </button>
+          </mat-card-actions>
+          <div class="divider">
+            <span>o</span>
+          </div>
+        </mat-card-content>
+        <button matButton="elevated" class="google-login-btn">
+          <img
+            src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
+            alt="Google logo"
+            class="google-icon"
+          />
+          <span style="color: rgba(49, 48, 48, 0.785)"
+            >Iniciar sesión con Google</span
+          >
+        </button>
+        <span>¿No tienes una cuenta? <a href="#" (click)="changeModeRegisterForm(); $event.preventDefault()">Regístrate</a></span>
+      
+      </mat-card>
+      }
+  
+    </div>
+  
+    <div class="info-content">
+      
+      <div class="logo-container">
+        <img
+          src="images-removebg-preview.png"
+          alt="Logo de la empresa"
+          class="logo-empresa"
+        />  
+      </div>
+      <h1>SINCHI WAYRA S.A.</h1>
+    </div>
+  </div>
+  
