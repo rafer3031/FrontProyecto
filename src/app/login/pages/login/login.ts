@@ -6,6 +6,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
+import { LeftContent } from '../../components/left-content/left-content';
+import { RightContent } from '../../components/right-content/right-content';
 @Component({
   selector: 'login',
   imports: [
@@ -16,18 +18,10 @@ import { FormsModule } from '@angular/forms';
     MatFormFieldModule,
     FormsModule,
     MatRadioModule,
+    LeftContent,
+    RightContent,
   ],
   templateUrl: './login.html',
   styleUrl: './login.scss',
 })
-export default class Login {
-  isLoginMode = signal(true);
-
-  constructor() {}
-  changeModeLoginForm() {
-    this.isLoginMode.set(true);
-  }
-  changeModeRegisterForm() {
-    this.isLoginMode.set(false);
-  }
-}
+export default class Login {}
