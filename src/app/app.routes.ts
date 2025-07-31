@@ -4,7 +4,7 @@ export const routes: Routes = [
   {
     path: '',
     redirectTo: '/login',
-    pathMatch: 'full'
+    pathMatch: 'full',
   },
   {
     path: 'login',
@@ -12,11 +12,26 @@ export const routes: Routes = [
   },
   {
     path: 'dashboard',
-    loadComponent: () => import('./dashboard/dashboard'),
+    loadComponent: () => import('./dashboard/pages/dashboard/dashboard'),
+    children: [
+      {
+        path: '',
+        loadComponent: () => import('./dashboard/components/dashboard-page/dashboard-page-content/dashboard-page-content'),
+      },
+      {
+        path: 'users',
+        loadComponent: () => import('./dashboard/pages/users/users'),
+      },
+      {
+        path: '**',
+        redirectTo: '/dashboard',
+        pathMatch: 'full'
+      }
+    ]
   },
   {
     path: '**',
     redirectTo: '/login',
-    pathMatch: 'full'
+    pathMatch: 'full',
   },
 ];

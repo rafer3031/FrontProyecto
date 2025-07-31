@@ -1,0 +1,35 @@
+<div class="min-h-screen bg-gray-900 text-white">
+  <mat-drawer-container class="h-screen">
+    <mat-drawer
+      #drawer
+      [mode]="sidenavMode()"
+      [opened]="sidenavOpened()"
+      class="w-64 bg-gray-800 border-r border-gray-700"
+    >
+      <div class="p-4">
+        <side-nav-header />
+        <nav class="space-y-2">
+          <side-nav-options />
+        </nav>
+      </div>
+
+      <div class="absolute bottom-4 left-4 text-xs text-gray-500">
+        <side-nav-footer />
+      </div>
+    </mat-drawer>
+    <!--Hasta aquí es el sidenav-->
+
+    <!-- Contenido principal -->
+    <mat-drawer-content class="bg-white">
+      <!-- Header -->
+      <tool-bar />
+
+      <!-- Contenido del dashboard -->
+      <div class="p-4 md:p-6">
+        <!-- Header -->
+        <dashboard-page-header />
+        <router-outlet />
+      </div>
+    </mat-drawer-content>
+  </mat-drawer-container>
+</div>

@@ -1,18 +1,56 @@
-@use '@angular/material' as mat;
+@use "@angular/material" as mat;
 
 html {
-  @include mat.theme((
-    color: (
-      primary: mat.$orange-palette,
-      tertiary: mat.$blue-palette,
-    ),
-    typography: Roboto,
-    density: 0,
-  ));
+  @include mat.theme(
+    (
+      color: (
+        primary: mat.$orange-palette,
+        tertiary: mat.$blue-palette,
+      ),
+      typography: Roboto,
+      density: 0,
+    )
+  );
 
   color-scheme: light;
+} /* You can add global styles to this file, and also import other style files */
 
-}/* You can add global styles to this file, and also import other style files */
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+.active {
+  @include mat.list-overrides(
+    (
+      list-item-container-color: blue,
+      list-item-selected-container-color: blue,
+      list-item-label-text-color: white,
+      list-item-hover-label-text-color: white,
+      list-item-focus-label-text-color: white,
+      list-item-leading-icon-color: white,
+      list-item-hover-leading-icon-color: white,
+      list-item-trailing-icon-color: white,
+      list-item-hover-trailing-icon-color: white,
+
+      list-item-hover-state-layer-opacity: 0,
+      list-item-focus-state-layer-opacity: 0,
+      list-item-disabled-state-layer-opacity: 0,
+      list-item-hover-state-layer-color: white,
+      list-item-focus-state-layer-color: white,
+      list-item-disabled-state-layer-color: white,
+    )
+  );
+}
+
+.white {
+  @include mat.icon-overrides(
+    (
+      color: white,
+    )
+  );
+}
