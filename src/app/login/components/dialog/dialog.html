@@ -1,0 +1,31 @@
+<div class="dialog">
+  <h2 matDialogTitle [class.error]="isError" [class.success]="!isError">
+    {{ isError ? "Error al autenticar" : "Se autenticó correctamente" }}
+  </h2>
+
+  <mat-dialog-content [class.custom-height]="!isError">
+    <span class="message">{{ message() }}</span>
+    @if (!isError) {
+    <h2 class="message font-semibold mt-6">
+      Seleccione su rol en la empresa por favor:
+    </h2>
+    <mat-radio-group [formControl]="roleControl" class="mt-2">
+      <mat-radio-button value="empleado">Empleado</mat-radio-button>
+      <mat-radio-button value="conductor">Conductor</mat-radio-button>
+      <mat-radio-button value="visitante">Visitante</mat-radio-button>
+    </mat-radio-group>
+    }
+  </mat-dialog-content>
+
+  <mat-dialog-actions>
+    <button
+      matButton
+      [mat-dialog-close]="message()"
+      class="mb-2"
+      [disabled]="!isError && roleControl.invalid"
+      [class.btn-dialog]="isError || roleControl.valid"
+    >
+      {{ isError ? "Cancelar" : "Continuar" }}
+    </button>
+  </mat-dialog-actions>
+</div>

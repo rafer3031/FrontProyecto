@@ -1,0 +1,15 @@
+.message {
+  font-size: 16px;
+}
+.btn-dialog {
+  color: var(--color-gray-700) ;
+}
+.mat-mdc-dialog-title {
+  margin-left: -6px;
+}
+.mat-mdc-radio-button ~ .mat-mdc-radio-button {
+  margin-left: 16px;
+}
+.custom-height {
+  height: 130px;
+}

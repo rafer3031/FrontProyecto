@@ -54,8 +54,8 @@
   width: 50vw;
   height: 100vh;
   display: flex;
+  align-items: center;
   justify-content: center;
-  align-items: start;
   z-index: 1;
   padding: 100px 0 0 40px;
   box-sizing: border-box;
@@ -84,10 +84,15 @@
   }
 
   .left-content {
-    height: 90vh;
+    height: auto;
     width: auto;
     justify-content: center;
     align-items: center;
     padding: 20px;
+    background-image: url("../../../../../public/logo2.png");
+    background-size: cover;
+    background-position: center bottom;
+    background-repeat: no-repeat;
+
   }
 }

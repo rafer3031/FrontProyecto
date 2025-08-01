@@ -8,6 +8,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
 import { LeftContent } from '../../components/left-content/left-content';
 import { RightContent } from '../../components/right-content/right-content';
+import { SupabaseService } from '../../services/supabase.service';
 @Component({
   selector: 'login',
   imports: [
@@ -24,4 +25,6 @@ import { RightContent } from '../../components/right-content/right-content';
   templateUrl: './login.html',
   styleUrl: './login.scss',
 })
-export default class Login {}
+export default class Login {
+
+}

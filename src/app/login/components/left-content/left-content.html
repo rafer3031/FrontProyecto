@@ -1,6 +1,1 @@
-@if (!isLoginMode()) {
-
-<register-card [isLoginMode]="isLoginMode()" (toggleMode)="toggleRegisterMode()" />
-} @else {
-<login-card [isLoginMode]="isLoginMode() " (toggleMode)="toggleLoginMode()" />
-}
+<login-card />

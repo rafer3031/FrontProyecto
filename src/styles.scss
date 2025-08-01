@@ -1,15 +1,20 @@
-@use './app/styles/material.scss';
-@use './app/styles/tailwind.css';
+@use "./app/styles/material.scss";
+@use "./app/styles/tailwind.css";
+@use "@angular/material" as mat;
 
-
-
-
-
-
-
-
-
-
-
-
+// Customize the entire app. Change :root to your selector if you want to scope the styles.
+.error {
+  @include mat.dialog-overrides(
+    (
+      subhead-color: red,
+    )
+  );
+}
+.success {
+  @include mat.dialog-overrides(
+    (
+      subhead-color: green,
+    )
+  );
+}
 
