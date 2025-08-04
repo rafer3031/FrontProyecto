@@ -1,8 +1,6 @@
 @use "./app/styles/material.scss";
 @use "./app/styles/tailwind.css";
 @use "@angular/material" as mat;
-
-// Customize the entire app. Change :root to your selector if you want to scope the styles.
 .error {
   @include mat.dialog-overrides(
     (
@@ -16,5 +14,18 @@
       subhead-color: green,
     )
   );
+}
+.bg-orange-dark {
+  @include mat.toolbar-overrides((
+    container-background-color: gray,
+    container-text-color: white,
+  ));
+}
+:root {
+  @include mat.sidenav-overrides((
+    container-background-color: black,
+    container-text-color: white,
+    container-shape: square
+  ));
 }
 

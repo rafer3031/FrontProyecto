@@ -68,30 +68,7 @@ export class SupabaseService {
       throw this.translateError(error);
     }
   }
-  updateProfile(profile: { id: string; rol: string }) {
-    const update = {
-      id: profile.id,
-      rol: profile.rol,
-      updated_at: new Date(),
-    };
 
-    return this.supabase.from('profiles').upsert(update, { onConflict: 'id' });
-  }
-  profile(user: User) {
-    return this.supabase
-      .from('profiles')
-      .select(`username, website, avatar_url`)
-      .eq('id', user.id)
-      .single();
-  }
-
-  downLoadImage(path: string) {
-    return this.supabase.storage.from('avatars').download(path);
-  }
-
-  uploadAvatar(filePath: string, file: File) {
-    return this.supabase.storage.from('avatars').upload(filePath, file);
-  }
 
   private translateError(error: Error): Error {
     const translations: { [key: string]: string } = {
