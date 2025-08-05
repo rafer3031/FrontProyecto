@@ -1,7 +1,7 @@
 export const environment = {
   //Keys Supabase
   production: true,
-  UrlProject: 'https://mgqaegzombrwwjcptcdx.supabase.co',
+  UrlProject: 'https://vjytjbgpzbizeqhpxuyc.supabase.co',
   ApiKeyPublic:
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1ncWFlZ3pvbWJyd3dqY3B0Y2R4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTM5MjAwNTIsImV4cCI6MjA2OTQ5NjA1Mn0.KMnseuAtTlgDVf3fgVVk0NHiyDzeJOPkLO3Yz74UwUg',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZqeXRqYmdwemJpemVxaHB4dXljIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQzNDQ1OTksImV4cCI6MjA2OTkyMDU5OX0.OMc5le-kWZ0sjMFFwi9V2UxdfxFxAxf7EGMD1FKVWBo',
 };

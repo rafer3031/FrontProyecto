@@ -1,41 +1,34 @@
 import { Routes } from '@angular/router';
-import { authGuard } from './dashboard/guards/auth-guard';
-import { loginGuard } from './login/guards/login.guard';
-
+import { loginGuard } from './pages/public/login/guards/login.guard';
+import { adminGuard } from './pages/admin/dashboard/guards/admin.guard';
+import { userGuard } from './pages/users/guards/user.guard';
+import { driverGuard } from './pages/drivers/guards/driver.guard';
 
 export const routes: Routes = [
+  {
+    path: 'login',
+    canActivate: [loginGuard],
+    loadComponent: () => import('./pages/public/login/pages/login/login'),
+  },
+  {
+    path: 'admin',
+    canMatch: [adminGuard],
+    loadChildren: () => import('./pages/admin/admin.routes'),
+  },
+  {
+    path: 'users',
+    canMatch: [userGuard],
+    loadChildren: () => import('./pages/users/users.routes'),
+  },
+  {
+    path: 'drivers',
+    canMatch: [driverGuard],
+    loadChildren: () => import('./pages/drivers/drivers.routes'),
+  },
   {
     path: '',
     redirectTo: '/login',
     pathMatch: 'full',
-  },
-  {
-    path: 'login',
-    canActivate: [loginGuard],
-    loadComponent: () => import('./login/pages/login/login'),
-  },
-  {
-    path: 'dashboard',
-    canActivate: [authGuard],
-    loadComponent: () => import('./dashboard/pages/dashboard/dashboard'),
-    children: [
-      {
-        path: '',
-        loadComponent: () =>
-          import(
-            './dashboard/components/dashboard-page/dashboard-page-content/dashboard-page-content'
-          ),
-      },
-      {
-        path: 'users',
-        loadComponent: () => import('./dashboard/pages/users/users'),
-      },
-      {
-        path: '**',
-        redirectTo: '/dashboard',
-        pathMatch: 'full',
-      },
-    ],
   },
   {
     path: '**',

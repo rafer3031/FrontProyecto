@@ -16,16 +16,26 @@
   );
 }
 .bg-orange-dark {
-  @include mat.toolbar-overrides((
-    container-background-color: gray,
-    container-text-color: white,
-  ));
+  @include mat.toolbar-overrides(
+    (
+      container-background-color: gray,
+      container-text-color: white,
+    )
+  );
 }
 :root {
-  @include mat.sidenav-overrides((
-    container-background-color: black,
-    container-text-color: white,
-    container-shape: square
-  ));
+  @include mat.sidenav-overrides(
+    (
+      container-background-color: black,
+      container-text-color: white,
+      container-shape: square,
+    )
+  );
 }
-
+.error {
+  @include mat.icon-overrides(
+    (
+      color: red,
+    )
+  );
+}
