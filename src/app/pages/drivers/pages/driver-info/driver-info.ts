@@ -1,9 +1,10 @@
 import { Component, inject } from '@angular/core';
 import { AuthService } from '../../../../shared/auth/auth.service';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-driver-info',
-  imports: [],
+  imports: [MatButtonModule],
   templateUrl: './driver-info.html',
   styleUrl: './driver-info.scss'
 })
