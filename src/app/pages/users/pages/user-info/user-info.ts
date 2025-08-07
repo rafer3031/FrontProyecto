@@ -1,5 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { DataAccessService } from '../../../../shared/services/data.access.service';
+import { AuthService } from '../../../../shared/auth/auth.service';
 
 @Component({
   selector: 'app-user-info',
@@ -8,5 +9,8 @@ import { DataAccessService } from '../../../../shared/services/data.access.servi
   styleUrl: './user-info.scss',
 })
 export default class UserInfo {
-  dataAccessService = inject(DataAccessService);
+  authService = inject(AuthService);
+  signOut(){
+    this.authService.signOut()
+  }
 }

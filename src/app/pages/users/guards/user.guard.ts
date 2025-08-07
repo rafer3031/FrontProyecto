@@ -13,9 +13,14 @@ export const userGuard: CanActivateFn = async (route, state) => {
     }
 
     const role = await authService.getUserRole(session.user.id);
+    if (!role || role === null || role === undefined) {
+      return router.parseUrl('/role-setup');
+    }
+
     return role === 2 ? true : router.parseUrl('/login');
   } catch (error) {
     console.error('Error en el guard:', error);
+
     return router.parseUrl('/login');
   }
 };

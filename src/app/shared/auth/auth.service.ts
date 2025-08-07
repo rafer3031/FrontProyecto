@@ -1,19 +1,16 @@
 import { inject, Injectable } from '@angular/core';
 import { SupabaseService } from '../services/supabase.service';
 import { Session, SignInWithPasswordCredentials } from '@supabase/supabase-js';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   supabaseService = inject(SupabaseService).supabase;
-  constructor() {
-    this.supabaseService.auth.onAuthStateChange((session) => {
-      console.log(session);
-    });
-  }
+
   session() {
-   return this.supabaseService.auth.getSession();
+    return this.supabaseService.auth.getSession();
   }
 
   signUp(credentials: SignInWithPasswordCredentials) {

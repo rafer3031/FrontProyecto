@@ -71,8 +71,10 @@ export class LoginCard {
 
       const role = await this.authService.getUserRole(id_auth);
 
+      // Redirección a role-setup si no tiene rol
       if (!role) {
-        throw new Error('Este usuario no está registrado en el sistema.');
+        this.router.navigate(['/role-setup']);
+        return;
       }
 
       switch (role) {

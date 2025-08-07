@@ -21,11 +21,4 @@ export class SupabaseService {
     );
   }
 
-  profile(user: User) {
-    return this.supabase
-      .from('usuarios')
-      .select('*')
-      .eq('id_auth', user.id)
-      .single();
-  }
 }

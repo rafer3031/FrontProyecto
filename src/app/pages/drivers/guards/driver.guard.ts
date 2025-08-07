@@ -11,8 +11,11 @@ export const driverGuard: CanActivateFn = async (route, state) => {
     if (!session) {
       return router.parseUrl('/login');
     }
-
     const role = await authService.getUserRole(session.user.id);
+    if (!role || role === null || role === undefined) {
+      return router.parseUrl('/role-setup');
+    }
+
     return role === 3 ? true : router.parseUrl('/login');
   } catch (error) {
     return router.parseUrl('/login');

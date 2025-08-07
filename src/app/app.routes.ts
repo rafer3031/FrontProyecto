@@ -3,6 +3,7 @@ import { loginGuard } from './pages/public/login/guards/login.guard';
 import { adminGuard } from './pages/admin/dashboard/guards/admin.guard';
 import { userGuard } from './pages/users/guards/user.guard';
 import { driverGuard } from './pages/drivers/guards/driver.guard';
+import { RoleSetupGuard } from './shared/components/role-setup/guards/role.setup.guard';
 
 export const routes: Routes = [
   {
@@ -13,7 +14,7 @@ export const routes: Routes = [
   },
   {
     path: 'role-setup',
-
+    canActivate: [RoleSetupGuard],
     loadComponent: () => import('./shared/components/role-setup/role.setup'),
   },
   {
@@ -36,6 +37,7 @@ export const routes: Routes = [
     redirectTo: '/login',
     pathMatch: 'full',
   },
+
   {
     path: '**',
     redirectTo: '/login',
