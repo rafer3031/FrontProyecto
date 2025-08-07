@@ -10,11 +10,8 @@
 .mat-mdc-radio-button ~ .mat-mdc-radio-button {
   margin-left: 16px;
 }
-.custom-height {
-  height: 130px;
-}
 .custom-height-flexible {
-  min-height: 130px;
+  min-height: 60px;
   max-height: 180px;
   overflow: hidden;
 }

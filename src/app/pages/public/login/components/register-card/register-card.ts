@@ -1,10 +1,12 @@
 import { Component, signal, inject, output } from '@angular/core';
 import {
+  AbstractControl,
   FormBuilder,
   FormControl,
   FormGroup,
   FormsModule,
   ReactiveFormsModule,
+  ValidationErrors,
   Validators,
 } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -16,10 +18,13 @@ import { MatDialog } from '@angular/material/dialog';
 import { Dialog } from '../dialog/dialog';
 import { AuthService } from '../../../../../shared/auth/auth.service';
 import { DialogError } from '../../../../../shared/components/dialog-error/dialog-error';
+import { DialogSuccess } from '../../../../../shared/components/dialog-success/dialog-success';
+import { DialogLoading } from '../../../../../shared/components/dialog-loading/dialog-loading';
 
 interface SignUpForm {
   email: FormControl<null | string>;
   password: FormControl<null | string>;
+  confirmPassword: FormControl<null | string>;
 }
 
 @Component({
@@ -39,60 +44,136 @@ interface SignUpForm {
 export class RegisterCard {
   changeValue = output();
   hide = signal(true);
+  hideConfirmPassword = signal(true);
   userRole = signal<string | null>(null);
 
   clickEvent(event: MouseEvent) {
     this.hide.set(!this.hide());
     event.stopPropagation();
   }
-
+  clickEventConfirm(event: MouseEvent) {
+    this.hideConfirmPassword.set(!this.hideConfirmPassword());
+    event.stopPropagation();
+  }
   private _formBuilder = inject(FormBuilder);
   private dialog = inject(MatDialog);
+  private passwordMatchValidator(
+    group: AbstractControl
+  ): ValidationErrors | null {
+    const password = group.get('password')?.value;
+    const confirmPassword = group.get('confirmPassword')?.value;
+
+    if (!password || !confirmPassword) {
+      return null;
+    }
+
+    return password === confirmPassword ? null : { passwordMismatch: true };
+  }
   authService = inject(AuthService);
 
-  form = this._formBuilder.group<SignUpForm>({
-    email: this._formBuilder.control(null, [
-      Validators.required,
-      Validators.email,
-    ]),
-    password: this._formBuilder.control(null, [
-      Validators.required,
-      Validators.minLength(6),
-    ]),
-  });
+  form = this._formBuilder.group<SignUpForm>(
+    {
+      email: this._formBuilder.control(null, [
+        Validators.required,
+        Validators.email,
+      ]),
+      password: this._formBuilder.control(null, [
+        Validators.required,
+        Validators.minLength(6),
+      ]),
+      confirmPassword: this._formBuilder.control(null, [Validators.required]),
+    },
+    { validators: this.passwordMatchValidator }
+  );
 
   async submit() {
     if (this.form.invalid) return;
 
-    try {
-      const authResponse = await this.authService.signUp({
-        email: this.form.value.email ?? '',
-        password: this.form.value.password ?? '',
+    const roleDialogRef = this.dialog.open(Dialog, {
+      data: { message: 'Seleccione su función en la empresa' },
+      width: '450px',
+      disableClose: true,
+    });
+
+    roleDialogRef.afterClosed().subscribe(async (selectedRole) => {
+      if (!selectedRole) return;
+
+      // Guardar rol local
+      this.userRole.set(selectedRole);
+      localStorage.setItem('pendingUserRole', selectedRole);
+
+      const loadingRef = this.dialog.open(DialogLoading, {
+        data: { message: 'Registrando usuario...' },
+        width: '400px',
+        disableClose: true,
+        panelClass: 'loading-dialog',
       });
 
-      if (authResponse.error) {
-        throw authResponse.error;
-      }
+      try {
+        await this.performRegistration(selectedRole);
 
-      this.showSuccessDialog(
-        'Por favor revisa tu correo y selecciona tu rol en la empresa.'
-      );
-    } catch (error: any) {
-      console.error('Error durante el registro:', error);
+        loadingRef.close();
 
-      if (
-        error.message &&
-        error.message.includes(
-          'For security purposes, you can only request this after'
-        )
-      ) {
-        this.showErrorDialog(
-          'Debes esperar 1 minuto antes de hacer otra solicitud.'
-        );
-      } else {
-        console.error(error);
+        this.dialog
+          .open(DialogSuccess, {
+            data: {
+              message:
+                'Por favor revise su correo electrónico para confirmar su cuenta.',
+            },
+            width: '450px',
+            disableClose: false,
+          })
+          .afterClosed()
+          .subscribe(() => {
+            this.form.reset();
+          });
+      } catch (error) {
+        loadingRef.close();
+
+        let message =
+          'Error durante el registro. Por favor intenta nuevamente.';
+
+        if (error instanceof Error) {
+          if (error.message?.includes('For security purposes')) {
+            message = 'Debes esperar 1 minuto antes de hacer otra solicitud.';
+          } else {
+            message = error.message;
+          }
+          console.error(error.message);
+        } else {
+          console.error('Error desconocido:', error);
+        }
+
+        this.dialog.open(DialogError, {
+          data: { message },
+          width: '400px',
+          disableClose: false,
+        });
       }
+    });
+  }
+
+  private async performRegistration(role: string): Promise<void> {
+    const authResponse = await this.authService.signUp({
+      email: this.form.value.email ?? '',
+      password: this.form.value.password ?? '',
+    });
+
+    if (authResponse.error) {
+      throw authResponse.error;
     }
+  }
+
+  private showFinalSuccessDialog(message: string) {
+    const dialogRef = this.dialog.open(DialogSuccess, {
+      data: { message },
+      width: '450px',
+      disableClose: false,
+    });
+
+    dialogRef.afterClosed().subscribe(() => {
+      this.form.reset();
+    });
   }
 
   private showErrorDialog(message: string) {
@@ -100,28 +181,6 @@ export class RegisterCard {
       data: { message },
       width: '400px',
       disableClose: false,
-    });
-  }
-
-  private showSuccessDialog(message: string) {
-    const dialogRef = this.dialog.open(Dialog, {
-      data: {
-        message: message,
-      },
-      width: '450px',
-      disableClose: true,
-    });
-
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        this.userRole.set(result);
-
-        // Guardar el rol seleccionado en localStorage para usarlo después
-        localStorage.setItem('pendingUserRole', result);
-
-        console.log('Rol del usuario guardado temporalmente:', this.userRole());
-        console.log('Rol guardado en localStorage para aplicar después de la confirmación');
-      }
     });
   }
 }

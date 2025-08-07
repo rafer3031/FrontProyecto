@@ -1,0 +1,12 @@
+<h2 mat-dialog-title class="text-green-600 flex items-center gap-2">
+  <mat-icon class="success-icon">check_circle</mat-icon>
+  Registro Exitoso
+</h2>
+
+<mat-dialog-content class="text-base text-zinc-800 dark:text-zinc-200 py-4">
+  <p>{{ data.message }}</p>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button matButton (click)="close()" class="mb-2" color="primary">Continuar</button>
+</mat-dialog-actions>

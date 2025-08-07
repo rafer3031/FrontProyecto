@@ -16,6 +16,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../../../shared/auth/auth.service';
 import { DialogError } from '../../../../../shared/components/dialog-error/dialog-error';
+import { DialogLoading } from '../../../../../shared/components/dialog-loading/dialog-loading';
 
 interface LogInForm {
   email: FormControl<null | string>;
@@ -59,24 +60,42 @@ export class LoginCard {
 
   async submit() {
     if (this.form.invalid) return;
+
+    const loadingRef = this.dialog.open(DialogLoading, {
+      data: { message: 'Iniciando sesión...' },
+      width: '400px',
+      disableClose: true,
+      panelClass: 'loading-dialog',
+    });
+
     try {
       const { error, data } = await this.authService.logIn({
         email: this.form.value.email ?? '',
         password: this.form.value.password ?? '',
       });
-      if (error) throw error;
 
-      const id_auth = data.session?.user.id;
-      if (!id_auth) throw new Error('No se pudo obtener el ID del usuario');
+      if (error) throw new Error('Correo o contraseña incorrectos.');
 
-      const role = await this.authService.getUserRole(id_auth);
+      const userId = data.session?.user.id;
+      if (!userId) throw new Error('No se pudo obtener el ID del usuario.');
 
-      // Redirección a role-setup si no tiene rol
+      // Actualizar el mensaje mientras se obtiene el rol
+      loadingRef.componentInstance.data = {
+        message: 'Verificando permisos...',
+      };
+
+      const role = await this.authService.getUserRole(userId);
+
+      // Cerramos el diálogo de carga correctamente
+      loadingRef.close();
+
+      // Si no hay rol, se redirige al setup
       if (!role) {
         this.router.navigate(['/role-setup']);
         return;
       }
 
+      // Redirigir según el rol
       switch (role) {
         case 1:
           this.router.navigate(['/admin']);
@@ -90,19 +109,23 @@ export class LoginCard {
         default:
           throw new Error('Rol no reconocido.');
       }
-    } catch (error) {
-      let message = 'Ha ocurrido un error inesperado.';
-      if (error instanceof Error) {
-        if (error.message.includes('Invalid login credentials')) {
+    } catch (err: any) {
+      console.error('Error en login:', err);
+
+      if (loadingRef) loadingRef.close();
+      let message = 'Error inesperado. Intente de nuevo.';
+
+      if (err instanceof Error) {
+        if (err.message.includes('contraseña incorrectos')) {
           message = 'Correo o contraseña incorrectos.';
-        } else {
-          message = error.message;
+        } else if (err.message.includes('Rol no reconocido')) {
+          message = err.message;
         }
-        console.error(error.message);
       }
 
       this.dialog.open(DialogError, {
         data: { message },
+        width: '400px',
       });
     }
   }

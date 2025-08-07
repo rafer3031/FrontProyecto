@@ -5,45 +5,20 @@ import { AuthService } from '../../../shared/auth/auth.service';
 import { DataAccessService } from '../../../shared/services/data.access.service';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Dialog } from '../../../pages/public/login/components/dialog/dialog';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-role-setup',
-  template: `
-    <div class="role-setup-container">
-      <div class="loading-spinner">
-        <mat-spinner></mat-spinner>
-        <p>Configurando tu cuenta...</p>
-      </div>
-    </div>
-  `,
-  styles: [
-    `
-      .role-setup-container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        flex-direction: column;
-      }
-
-      .loading-spinner {
-        text-align: center;
-      }
-
-      .loading-spinner p {
-        margin-top: 16px;
-        color: #666;
-      }
-    `,
-  ],
-  imports: [MatProgressSpinnerModule],
+  standalone: true,
+  templateUrl: './role-setup.component.html',
+  styleUrl: './role-setup.component.scss',
+  imports: [MatProgressSpinnerModule, MatCardModule],
 })
 export default class RoleSetupComponent implements OnInit {
   private router = inject(Router);
   private dialog = inject(MatDialog);
   private authService = inject(AuthService);
   private dataAccessService = inject(DataAccessService);
-
   private isProcessing = signal(false);
 
   async ngOnInit() {
@@ -89,7 +64,7 @@ export default class RoleSetupComponent implements OnInit {
     return new Promise((resolve, reject) => {
       const dialogRef = this.dialog.open(Dialog, {
         width: '400px',
-        data: { message: 'Selecciona tu rol para continuar' },
+        data: { message: 'Seleccione su función en la empresa para continuar' },
         disableClose: true,
       });
 

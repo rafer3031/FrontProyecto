@@ -11,7 +11,7 @@ import {
   MatDialogModule,
   MatDialogRef,
 } from '@angular/material/dialog';
-import { MatFormFieldModule, MatLabel } from '@angular/material/form-field';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 
@@ -39,8 +39,6 @@ export class Dialog {
 
   readonly dialogRef = inject(MatDialogRef<Dialog>);
   readonly data = inject<DialogData>(MAT_DIALOG_DATA);
-  readonly message = model(this.data.message);
-
   constructor() {
     this.dialogRef.disableClose = true;
     this.roleControl.valueChanges.subscribe(value => {

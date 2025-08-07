@@ -1,0 +1,68 @@
+.loading-container {
+  min-width: 300px;
+}
+
+mat-dialog-content {
+  overflow: visible;
+}
+
+mat-spinner {
+  margin: 0 auto;
+}
+
+.flex {
+  display: flex;
+}
+
+.flex-col {
+  flex-direction: column;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.gap-4 {
+  gap: 1rem;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.py-8 {
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+
+.text-lg {
+  font-size: 1.125rem;
+}
+
+.font-medium {
+  font-weight: 500;
+}
+
+.text-gray-800 {
+  color: rgb(31, 41, 55);
+}
+
+.dark .text-gray-200 {
+  color: rgb(229, 231, 235);
+}
+
+.text-sm {
+  font-size: 0.875rem;
+}
+
+.text-gray-600 {
+  color: rgb(75, 85, 99);
+}
+
+.dark .text-gray-400 {
+  color: rgb(156, 163, 175);
+}
+
+.m-0 {
+  margin: 0;
+}

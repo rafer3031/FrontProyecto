@@ -25,7 +25,6 @@ import { SupabaseService } from '../../../../../shared/services/supabase.service
   styleUrl: './dashboard.scss',
 })
 export default class DashboardComponent {
-
   supabaseService = inject(SupabaseService);
   isHandset = signal(false);
   sidenavMode = signal<'side' | 'over'>('side');

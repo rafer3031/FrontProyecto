@@ -1,5 +1,4 @@
 export const environment = {
-  //Keys Supabase
   production: true,
   UrlProject: 'https://vjytjbgpzbizeqhpxuyc.supabase.co',
   ApiKeyPublic:

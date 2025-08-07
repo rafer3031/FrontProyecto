@@ -22,7 +22,7 @@
           matInput
           #email
           maxlength="45"
-          placeholder="rafaelargotez@gmail.com"
+          placeholder="ejemplo@outlook.com"
           formControlName="email"
           required
         />
@@ -34,7 +34,7 @@
         <mat-hint align="end">{{ email.value.length }} / 45</mat-hint>
       </mat-form-field>
       <mat-form-field class="input-form mb-3">
-        <mat-label>Ingresa tu contraseña</mat-label>
+        <mat-label>Ingrese su contraseña</mat-label>
         <input
           maxlength="45"
           #password
@@ -61,8 +61,45 @@
         }
         <mat-hint align="end">{{ password.value.length }} / 45</mat-hint>
       </mat-form-field>
+      <mat-form-field class="input-form mb-3">
+        <mat-label>Confirme su contraseña</mat-label>
+        <input
+          maxlength="45"
+          #confirmPassword
+          matInput
+          formControlName="confirmPassword"
+          [type]="hideConfirmPassword() ? 'password' : 'text'"
+        />
+        <button
+          type="button"
+          matIconButton
+          matSuffix
+          (click)="clickEventConfirm($event)"
+          [attr.aria-label]="'Hide confirm Password'"
+          [attr.aria-pressed]="hideConfirmPassword()"
+        >
+          <mat-icon>{{
+            hideConfirmPassword() ? "visibility_off" : "visibility"
+          }}</mat-icon>
+        </button>
+
+        @if (form.controls.confirmPassword.errors?.['required'] &&
+        confirmPassword.value == '') {
+        <mat-error>Confirmar contraseña es obligatoria</mat-error>
+        } @if (form.errors?.['passwordMismatch'] && confirmPassword.value != ''
+        && form.controls.password.value != '') {
+        <mat-error>Las contraseñas no coinciden</mat-error>
+        }
+
+        <mat-hint align="end">{{ confirmPassword.value.length }} / 45</mat-hint>
+      </mat-form-field>
       <mat-card-actions>
-        <button type="submit" matButton="elevated" class="btn-ingresar mt-1" [disabled]="form.invalid">
+        <button
+          type="submit"
+          matButton="elevated"
+          class="btn-ingresar mt-1"
+          [disabled]="form.invalid"
+        >
           Registrar datos
         </button>
       </mat-card-actions>
