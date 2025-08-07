@@ -3,7 +3,6 @@ import {
   AbstractControl,
   FormBuilder,
   FormControl,
-  FormGroup,
   FormsModule,
   ReactiveFormsModule,
   ValidationErrors,
@@ -98,7 +97,6 @@ export class RegisterCard {
     roleDialogRef.afterClosed().subscribe(async (selectedRole) => {
       if (!selectedRole) return;
 
-      // Guardar rol local
       this.userRole.set(selectedRole);
       localStorage.setItem('pendingUserRole', selectedRole);
 
@@ -164,23 +162,5 @@ export class RegisterCard {
     }
   }
 
-  private showFinalSuccessDialog(message: string) {
-    const dialogRef = this.dialog.open(DialogSuccess, {
-      data: { message },
-      width: '450px',
-      disableClose: false,
-    });
 
-    dialogRef.afterClosed().subscribe(() => {
-      this.form.reset();
-    });
-  }
-
-  private showErrorDialog(message: string) {
-    this.dialog.open(DialogError, {
-      data: { message },
-      width: '400px',
-      disableClose: false,
-    });
-  }
 }

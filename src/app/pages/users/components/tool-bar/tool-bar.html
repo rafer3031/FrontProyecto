@@ -1,1 +1,14 @@
-<p>tool-bar works!</p>
+<mat-toolbar class="toolbar-user">
+  <button mat-icon-button class="example-icon" aria-label="Botón de menú">
+    <mat-icon>menu</mat-icon>
+  </button>
+
+  <span class="welcome-text">Bienvenido {{ userInfo()?.nombres }}</span>
+
+  <span class="example-spacer"></span>
+
+  <button mat-fab extended (click)="signOut()" class="logout-button">
+    <mat-icon>logout</mat-icon>
+    <span class="logout-text">Cerrar sesión</span>
+  </button>
+</mat-toolbar>

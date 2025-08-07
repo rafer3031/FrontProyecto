@@ -1,0 +1,73 @@
+.toolbar-user {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 30px 30px 30px 10px;
+  height: auto;
+  flex-wrap: wrap;
+  color: inherit;
+}
+
+
+.welcome-text {
+  font-size: 30px;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 50vw;
+}
+
+.logout-button {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  padding: 0 12px;
+  min-height: 40px;
+  height: auto;
+  max-width: 100%;
+  flex-shrink: 0;
+
+  mat-icon {
+    margin-right: 6px;
+    font-size: 20px;
+  }
+
+  .logout-text {
+    white-space: nowrap;
+  }
+}
+
+.example-spacer {
+  flex: 1 1 auto;
+}
+
+@media (max-width: 600px) {
+  .toolbar-user {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .welcome-text {
+    font-size: 25px;
+    max-width: 100%;
+    text-align: center;
+    margin-top: -45px;
+    margin-left: 40px;
+  }
+
+  .logout-button {
+    width: 50%;
+    margin-left: 100px;
+    font-size: 13px;
+
+    .logout-text {
+      display: inline; // Siempre visible
+    }
+  }
+
+  .example-icon {
+    align-self: flex-start;
+  }
+}

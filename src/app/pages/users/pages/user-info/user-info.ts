@@ -1,44 +1,34 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { DataAccessService } from '../../../../shared/services/data.access.service';
 import { AuthService } from '../../../../shared/auth/auth.service';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
-import { Router } from '@angular/router';
+import { Router, RouterOutlet } from '@angular/router';
 import { DialogLoading } from '../../../../shared/components/dialog-loading/dialog-loading';
 import { DialogError } from '../../../../shared/components/dialog-error/dialog-error';
+import { MatIconModule } from '@angular/material/icon';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { SupabaseService } from '../../../../shared/services/supabase.service';
+import { UsersInterface } from '../../../../shared/interfaces/users/user.interface';
+import { ToolBar } from '../../components/tool-bar/tool-bar';
 
 @Component({
   selector: 'app-user-info',
-  imports: [MatButtonModule],
+  imports: [MatButtonModule, MatIconModule, MatToolbarModule, ToolBar, RouterOutlet],
   templateUrl: './user-info.html',
   styleUrl: './user-info.scss',
 })
 export default class UserInfo {
-  router = inject(Router);
-  authService = inject(AuthService);
-  dialog = inject(MatDialog);
+  dataAccessService = inject(DataAccessService);
 
-  async signOut() {
-
-    const loadingDialogRef = this.dialog.open(DialogLoading, {
-      data: { message: 'Cerrando sesión' },
-      width: '400px',
-      disableClose: true,
-      panelClass: 'loading-dialog'
-    });
-
-    try {
-      await this.authService.signOut();
-
-      loadingDialogRef.close();
-
-      this.router.navigate(['/login']);
-
-    } catch (error) {
-      loadingDialogRef.close();
-      this.dialog.open(DialogError, {
-        data: { message: 'Error al cerrar sesión. Intenta nuevamente.' },
-       });
+  user = signal<UsersInterface | null>(null);
+  ngOnInit() {
+    this.getInfoUser();
+  }
+  async getInfoUser() {
+    const response = await this.dataAccessService.getAllUsers();
+    if (response && response.length > 0) {
+      this.user.set(response[0]);
     }
   }
 }

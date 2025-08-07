@@ -1,6 +1,7 @@
 @use "./app/styles/material.scss";
 @use "./app/styles/tailwind.css";
 @use "@angular/material" as mat;
+@use "./app/styles/styles_theme-colors.scss" as xd;
 .error {
   @include mat.dialog-overrides(
     (
@@ -39,3 +40,19 @@
     )
   );
 }
+.toolbar-user {
+  @include mat.toolbar-overrides((
+    container-background-color: map-get(xd.$primary-palette, 70),
+    container-text-color: black,
+    standard-height: 100px
+  ));
+}
+.logout-button{
+  @include mat.fab-overrides((
+    container-color: white,
+    foreground-color: black,
+    container-elevation-shadow: var(--mat-sys-level0)
+  ));
+
+}
+

@@ -43,4 +43,14 @@ export class AuthService {
     if (error || !data) return null;
     return data.id_rol;
   }
+  async getUserName(id_auth: string): Promise<number | null> {
+    const { data, error } = await this.supabaseService
+      .from('usuarios')
+      .select('nombres')
+      .eq('id_auth', id_auth)
+      .maybeSingle();
+
+    if (error || !data) return null;
+    return data.nombres;
+  }
 }
