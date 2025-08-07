@@ -7,8 +7,14 @@ import { Session, SignInWithPasswordCredentials } from '@supabase/supabase-js';
 })
 export class AuthService {
   supabaseService = inject(SupabaseService).supabase;
-
-  session() {}
+  constructor() {
+    this.supabaseService.auth.onAuthStateChange((session) => {
+      console.log(session);
+    });
+  }
+  session() {
+   return this.supabaseService.auth.getSession();
+  }
 
   signUp(credentials: SignInWithPasswordCredentials) {
     return this.supabaseService.auth.signUp(credentials);
@@ -31,14 +37,13 @@ export class AuthService {
     return data.session;
   }
   async getUserRole(id_auth: string): Promise<number | null> {
-  const { data, error } = await this.supabaseService
-    .from('usuarios')
-    .select('id_rol')
-    .eq('id_auth', id_auth)
-    .maybeSingle();
+    const { data, error } = await this.supabaseService
+      .from('usuarios')
+      .select('id_rol')
+      .eq('id_auth', id_auth)
+      .maybeSingle();
 
-  if (error || !data) return null;
-  return data.id_rol;
-}
-
+    if (error || !data) return null;
+    return data.id_rol;
+  }
 }

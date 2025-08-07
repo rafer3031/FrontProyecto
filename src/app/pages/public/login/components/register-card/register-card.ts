@@ -40,6 +40,7 @@ export class RegisterCard {
   changeValue = output();
   hide = signal(true);
   userRole = signal<string | null>(null);
+
   clickEvent(event: MouseEvent) {
     this.hide.set(!this.hide());
     event.stopPropagation();
@@ -101,6 +102,7 @@ export class RegisterCard {
       disableClose: false,
     });
   }
+
   private showSuccessDialog(message: string) {
     const dialogRef = this.dialog.open(Dialog, {
       data: {
@@ -113,7 +115,12 @@ export class RegisterCard {
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         this.userRole.set(result);
-        console.log('Rol del usuario guardado:', this.userRole());
+
+        // Guardar el rol seleccionado en localStorage para usarlo después
+        localStorage.setItem('pendingUserRole', result);
+
+        console.log('Rol del usuario guardado temporalmente:', this.userRole());
+        console.log('Rol guardado en localStorage para aplicar después de la confirmación');
       }
     });
   }

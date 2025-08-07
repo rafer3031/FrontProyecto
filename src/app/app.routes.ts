@@ -8,7 +8,13 @@ export const routes: Routes = [
   {
     path: 'login',
     canActivate: [loginGuard],
+
     loadComponent: () => import('./pages/public/login/pages/login/login'),
+  },
+  {
+    path: 'role-setup',
+
+    loadComponent: () => import('./shared/components/role-setup/role.setup'),
   },
   {
     path: 'admin',

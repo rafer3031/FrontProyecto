@@ -1,8 +1,9 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { SupabaseService } from './shared/services/supabase.service';
+import { DataAccessService } from './shared/services/data.access.service';
+import { AuthService } from './shared/auth/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -10,6 +11,4 @@ import { SupabaseService } from './shared/services/supabase.service';
   templateUrl: './app.html',
   styleUrl: './app.scss',
 })
-export class App {
-
-}
+export class App {}

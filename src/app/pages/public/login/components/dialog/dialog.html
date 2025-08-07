@@ -1,7 +1,5 @@
 <div class="dialog">
-  <h2 matDialogTitle class="success">
-    Se autenticó correctamente
-  </h2>
+  <h2 matDialogTitle class="success">Se autenticó correctamente</h2>
 
   <mat-dialog-content class="custom-height-flexible">
     <span class="message">{{ message() }}</span>
@@ -10,9 +8,9 @@
       Seleccione su rol en la empresa por favor:
     </h2>
     <mat-radio-group [formControl]="roleControl" class="mt-2" required>
-      <mat-radio-button value="empleado">Empleado</mat-radio-button>
-      <mat-radio-button value="conductor">Conductor</mat-radio-button>
-      <mat-radio-button value="visitante">Visitante</mat-radio-button>
+      <mat-radio-button value="2">Empleado</mat-radio-button>
+      <mat-radio-button value="3">Conductor</mat-radio-button>
+      <mat-radio-button value="2">Visitante</mat-radio-button>
     </mat-radio-group>
 
     @if (roleControl.invalid && roleControl.touched) {
