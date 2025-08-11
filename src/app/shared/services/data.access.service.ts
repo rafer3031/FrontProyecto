@@ -26,6 +26,38 @@ export class DataAccessService {
         ...state,
         loading: true,
       }));
+      const { data } = await this.supabaseClient
+        .from('usuarios')
+        .select()
+        .overrideTypes<UsersInterface[]>();
+
+      if (data) {
+        this.state.update((state) => ({
+          ...state,
+          data: data,
+        }));
+      }
+
+      return data;
+    } catch (error) {
+      this.state.update((state) => ({
+        ...state,
+        error: true,
+      }));
+      return null;
+    } finally {
+      this.state.update((state) => ({
+        ...state,
+        loading: false,
+      }));
+    }
+  }
+  async getCurrentUser() {
+    try {
+      this.state.update((state) => ({
+        ...state,
+        loading: true,
+      }));
 
       const session = await this.authService.getSession();
 
@@ -91,7 +123,7 @@ export class DataAccessService {
     nombres: string | null;
     apellidos: string | null;
     numero_celular: string | null;
-    operacion: string |null;
+    operacion: string | null;
   }): Promise<void> {
     const session = await this.authService.getSession();
 
@@ -128,8 +160,7 @@ export class DataAccessService {
 
       console.log('Información actualizada exitosamente:', data);
 
-      await this.getAllUsers();
-
+      await this.getCurrentUser();
     } catch (error) {
       console.error('Error en updateInfoUser:', error);
       throw error;
@@ -162,7 +193,6 @@ export class DataAccessService {
         data?.numero_celular &&
         data?.operacion
       );
-
     } catch (error) {
       console.error('Error en checkUserInfoComplete:', error);
       return false;

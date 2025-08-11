@@ -1,6 +1,5 @@
 import { Component, inject, input, signal, viewChild } from '@angular/core';
 import { ToolBar } from '../../components/tool-bar/tool-bar/tool-bar';
-import { DashboardPageHeader } from '../../components/dashboard-page/dashboard-page-header/dashboard-page-header';
 import { RouterOutlet } from '@angular/router';
 import { MatDrawer, MatSidenavModule } from '@angular/material/sidenav';
 import { SideNavHeader } from '../../components/side-nav/side-nav-header/side-nav-header';
@@ -14,7 +13,6 @@ import { SupabaseService } from '../../../../../shared/services/supabase.service
   standalone: true,
   imports: [
     ToolBar,
-    DashboardPageHeader,
     RouterOutlet,
     MatSidenavModule,
     SideNavHeader,

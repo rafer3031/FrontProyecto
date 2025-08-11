@@ -56,3 +56,23 @@
 
 }
 
+:root {
+  @include mat.table-overrides((
+    background-color: black,
+    header-headline-color: white,
+    row-item-label-text-color: white,
+    row-item-outline-color: white
+  ));
+}
+:root {
+  @include mat.paginator-overrides((
+    container-text-color: white,
+    container-background-color: black,
+  ));
+}
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow-y: hidden; /* evita scroll vertical */
+}
