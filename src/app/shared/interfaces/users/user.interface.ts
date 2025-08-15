@@ -1,17 +1,17 @@
-export interface UsersInterface{
-  id_rol?: number,
-  numero_ficha?: string,
-  ci?: string,
-  nombres?: string,
-  apellidos?: string,
-  numero_celular?: string,
-  correo_electronico?: string,
-  operacion?: string,
-  confirma_salida_viernes?: boolean,
-  confirma_retorno_domingo?: boolean,
-  destino_seleccionado?: string,
-  id_auth?: string
+export interface UsersInterface {
+  id_rol?: number | null;
+  numero_ficha?: string | null;
+  ci?: string | null;
+  nombres?: string | null;
+  apellidos?: string | null;
+  numero_celular?: string | null;
+  correo_electronico?: string | null;
+  operacion?: string | null;
+  destino_origen?: string | null;
+  estado?: string | null;
+  id_auth?: string | null;
 }
+
 export interface UserState{
   data: UsersInterface[],
   loading: boolean,

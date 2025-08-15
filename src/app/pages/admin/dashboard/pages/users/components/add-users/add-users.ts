@@ -1,4 +1,4 @@
-import { Component, signal, inject, output } from '@angular/core';
+import { Component, signal, inject } from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
@@ -13,12 +13,12 @@ import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { MatDialog } from '@angular/material/dialog';
-import { Dialog } from '../dialog/dialog';
-import { AuthService } from '../../../../../shared/auth/auth.service';
-import { DialogError } from '../../../../../shared/components/dialog-error/dialog-error';
-import { DialogSuccess } from '../../../../../shared/components/dialog-success/dialog-success';
-import { DialogLoading } from '../../../../../shared/components/dialog-loading/dialog-loading';
+import { MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { AuthService } from '../../../../../../../shared/auth/auth.service';
+import { DialogError } from '../../../../../../../shared/components/dialog-error/dialog-error';
+import { DialogLoading } from '../../../../../../../shared/components/dialog-loading/dialog-loading';
+import { DialogSuccess } from '../../../../../../../shared/components/dialog-success/dialog-success';
+import { Dialog } from '../../../../../../public/login/components/dialog/dialog';
 
 interface SignUpForm {
   email: FormControl<null | string>;
@@ -27,7 +27,7 @@ interface SignUpForm {
 }
 
 @Component({
-  selector: 'register-card',
+  selector: 'add-user-dialog',
   imports: [
     MatCardModule,
     MatButtonModule,
@@ -36,12 +36,13 @@ interface SignUpForm {
     MatFormFieldModule,
     FormsModule,
     ReactiveFormsModule,
+    MatDialogModule
   ],
-  templateUrl: './register-card.html',
-  styleUrl: './register-card.scss',
+  templateUrl: './add-users.html',
+  styleUrl: './add-users.scss',
 })
-export class RegisterCard {
-  changeValue = output();
+export class AddUserDialog {
+  private dialogRef = inject(MatDialogRef<AddUserDialog>);
   hide = signal(true);
   hideConfirmPassword = signal(true);
   userRole = signal<string | null>(null);
@@ -50,12 +51,15 @@ export class RegisterCard {
     this.hide.set(!this.hide());
     event.stopPropagation();
   }
+
   clickEventConfirm(event: MouseEvent) {
     this.hideConfirmPassword.set(!this.hideConfirmPassword());
     event.stopPropagation();
   }
+
   private _formBuilder = inject(FormBuilder);
   private dialog = inject(MatDialog);
+
   private passwordMatchValidator(
     group: AbstractControl
   ): ValidationErrors | null {
@@ -68,6 +72,7 @@ export class RegisterCard {
 
     return password === confirmPassword ? null : { passwordMismatch: true };
   }
+
   authService = inject(AuthService);
 
   form = this._formBuilder.group<SignUpForm>(
@@ -84,6 +89,10 @@ export class RegisterCard {
     },
     { validators: this.passwordMatchValidator }
   );
+
+  onCancel() {
+    this.dialogRef.close(false);
+  }
 
   async submit() {
     if (this.form.invalid) return;
@@ -118,6 +127,7 @@ export class RegisterCard {
               tittle: 'Registro exitoso',
               message:
                 'Por favor revise su correo electrónico para confirmar su cuenta.',
+
             },
             width: '450px',
             disableClose: false,
@@ -125,6 +135,7 @@ export class RegisterCard {
           .afterClosed()
           .subscribe(() => {
             this.form.reset();
+            this.dialogRef.close(true);
           });
       } catch (error) {
         loadingRef.close();
@@ -162,6 +173,4 @@ export class RegisterCard {
       throw authResponse.error;
     }
   }
-
-
 }

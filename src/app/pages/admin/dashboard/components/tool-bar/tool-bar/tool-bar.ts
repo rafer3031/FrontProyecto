@@ -21,7 +21,7 @@ export class ToolBar {
   private dataAccessService = inject(DataAccessService);
   private authService = inject(AuthService);
 
-  names = signal<string | undefined>('');
+  names = signal<string | null | undefined>('');
   async getName() {
     const response = await this.dataAccessService.getCurrentUser();
     this.names.set(response![0].nombres)

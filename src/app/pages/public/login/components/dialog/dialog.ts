@@ -44,14 +44,12 @@ export class Dialog {
     this.roleControl.valueChanges.subscribe(value => {
       if (value) {
         this.selectedRole.set(value);
-        console.log('Rol seleccionado:', value);
       }
     });
   }
 
   onContinue() {
     if (this.roleControl.valid) {
-      console.log('Continuando con rol:', this.selectedRole());
       this.dialogRef.close(this.selectedRole());
     }
   }

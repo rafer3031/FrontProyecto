@@ -1,6 +1,9 @@
 import { computed, inject, Injectable, signal } from '@angular/core';
 import { AuthService } from '../../../../../../shared/auth/auth.service';
-import { UsersInterface, UserState } from '../../../../../../shared/interfaces/users/user.interface';
+import {
+  UsersInterface,
+  UserState,
+} from '../../../../../../shared/interfaces/users/user.interface';
 import { SupabaseService } from '../../../../../../shared/services/supabase.service';
 
 @Injectable({
@@ -24,7 +27,6 @@ export class UsersService {
         ...state,
         loading: true,
       }));
-
 
       const { data } = await this.supabaseClient
         .from('usuarios')
@@ -51,6 +53,36 @@ export class UsersService {
         ...state,
         loading: false,
       }));
+    }
+  }
+  async updateUserInfo(
+    userIdAuth: string,
+    formData: Partial<UsersInterface>
+  ): Promise<void> {
+    try {
+      const { data, error } = await this.supabaseClient
+        .from('usuarios')
+        .update({
+          nombres: formData.nombres,
+          apellidos: formData.apellidos,
+          ci: formData.ci,
+          numero_celular: formData.numero_celular,
+          operacion: formData.operacion,
+          numero_ficha: formData.numero_ficha,
+          destino_origen: formData.destino_origen,
+        })
+        .eq('id_auth', userIdAuth) // aquí ya no usamos el usuario logueado
+        .select();
+
+      if (error) {
+        console.error('Error de Supabase al actualizar usuario:', error);
+        throw new Error(`Error al actualizar usuario: ${error.message}`);
+      }
+
+      console.log('Usuario actualizado exitosamente:', data);
+    } catch (error) {
+      console.error('Error en updateUserInfo:', error);
+      throw error;
     }
   }
 }

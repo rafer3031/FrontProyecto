@@ -8,7 +8,6 @@ import { Router } from '@angular/router';
 import { AuthService } from '../../../../shared/auth/auth.service';
 import { MatDialog } from '@angular/material/dialog';
 import { DataAccessService } from '../../../../shared/services/data.access.service';
-import { UsersInterface } from '../../../../shared/interfaces/users/user.interface';
 
 @Component({
   selector: 'app-tool-bar',
@@ -19,9 +18,16 @@ import { UsersInterface } from '../../../../shared/interfaces/users/user.interfa
 export class ToolBar {
   router = inject(Router);
   authService = inject(AuthService);
+  private dataAccessService = inject(DataAccessService);
   dialog = inject(MatDialog);
-  userInfo = input<UsersInterface | null>()
-
+  names = signal<string | undefined | null>('');
+   constructor() {
+    this.getName()
+  }
+  async getName() {
+    const response = await this.dataAccessService.getCurrentUser();
+    this.names.set(response![0].nombres);
+  }
   async signOut() {
     const loadingDialogRef = this.dialog.open(DialogLoading, {
       data: { message: 'Cerrando sesión' },

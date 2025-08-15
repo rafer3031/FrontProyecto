@@ -120,6 +120,18 @@
             ¿Es visitante?
           </mat-checkbox>
         </div>
+        <mat-form-field>
+          <mat-label>Destino Origen</mat-label>
+          <mat-select formControlName="destino_origen" required>
+            @for (destino of destinos; track $index) {
+            <mat-option [value]="destino">
+              {{ destino }} </mat-option
+            >}
+          </mat-select>
+          @if (form.controls.destino_origen.errors?.['required']) {
+          <mat-error>El destino es obligatorio</mat-error>
+          }
+        </mat-form-field>
       </div>
     </form>
   </mat-dialog-content>

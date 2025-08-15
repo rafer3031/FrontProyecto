@@ -1,6 +1,11 @@
 <section class="flex flex-row justify-between">
   <h1 class="text-4xl mt-11 font-bold">Lista de usuarios</h1>
-  <button matFab extended class="mx-10 my-10">
+  <button
+    matFab
+    extended
+    class="mx-10 my-10"
+    (click)="openAddUserDialog()"
+  >
     <mat-icon>add</mat-icon>
     Agregar Usuario
   </button>

@@ -37,6 +37,7 @@ interface UpdateInfoUserForm {
   apellidos: FormControl<null | string>;
   numero_celular: FormControl<null | string>;
   operacion: FormControl<null | string>;
+  destino_origen: FormControl<null | string>;
 }
 @Component({
   selector: 'app-complete-info',
@@ -60,6 +61,7 @@ export class CompleteInfo {
   esBolivar = false;
   esVisitante = false;
   isSubmitting = false;
+  destinos = ['Oruro', 'La Paz', 'Cochabamba', 'Potosí'];
 
   private dataAccessService = inject(DataAccessService);
   private router = inject(Router);
@@ -76,6 +78,7 @@ export class CompleteInfo {
     apellidos: this.formBuilder.control(null, [Validators.required]),
     numero_celular: this.formBuilder.control(null, [Validators.required]),
     operacion: this.formBuilder.control(null, [Validators.required]),
+    destino_origen: this.formBuilder.control(null, [Validators.required]),
   });
 
   toggleBolivar() {

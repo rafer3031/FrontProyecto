@@ -124,6 +124,7 @@ export class DataAccessService {
     apellidos: string | null;
     numero_celular: string | null;
     operacion: string | null;
+    destino_origen: string | null;
   }): Promise<void> {
     const session = await this.authService.getSession();
 
@@ -145,6 +146,7 @@ export class DataAccessService {
           apellidos: user.apellidos.trim(),
           numero_celular: user.numero_celular?.trim(),
           operacion: user.operacion?.trim(),
+          destino_origen: user.destino_origen?.trim()
         })
         .eq('id_auth', session.user.id)
         .select();
@@ -177,7 +179,7 @@ export class DataAccessService {
 
       const { data, error } = await this.supabaseClient
         .from('usuarios')
-        .select('nombres, apellidos, ci, numero_celular, operacion')
+        .select('nombres, apellidos, ci, numero_celular, operacion, destino_origen')
         .eq('id_auth', session.user.id)
         .single();
 
@@ -191,7 +193,8 @@ export class DataAccessService {
         data?.apellidos &&
         data?.ci &&
         data?.numero_celular &&
-        data?.operacion
+        data?.operacion &&
+        data?.destino_origen
       );
     } catch (error) {
       console.error('Error en checkUserInfoComplete:', error);

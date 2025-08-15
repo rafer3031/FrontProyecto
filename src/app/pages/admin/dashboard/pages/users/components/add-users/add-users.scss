@@ -1,0 +1,53 @@
+.dialog-container {
+  padding: 20px;
+  min-width: 400px;
+}
+
+.dialog-header {
+  text-align: center;
+  margin-bottom: 20px;
+
+  .login-icon {
+    font-size: 48px;
+    width: 48px;
+    height: 48px;
+    color: #1976d2;
+  }
+}
+
+.dialog-content {
+  padding: 0 !important;
+  margin: 0;
+
+  .input-form {
+    width: 100%;
+    display: block;
+  }
+}
+
+.dialog-actions {
+  padding: 20px 0 0 0 !important;
+  gap: 12px;
+
+  .cancel-button {
+    color: #666;
+  }
+
+  .submit-button {
+    background-color: #1976d2;
+    color: white;
+
+    &:disabled {
+      background-color: #ccc;
+      color: #666;
+    }
+  }
+}
+
+// Estilos globales para el dialog
+::ng-deep {
+  .custom-dialog-container .mat-mdc-dialog-container {
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  }
+}
