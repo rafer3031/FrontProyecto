@@ -32,6 +32,7 @@ export class UsersService {
         .from('usuarios')
         .select()
         .eq('id_rol', 2)
+        .eq('estado', 'Activo')
         .overrideTypes<UsersInterface[]>();
 
       if (data) {
@@ -85,4 +86,24 @@ export class UsersService {
       throw error;
     }
   }
+  async deactivateUser(userIdAuth: string): Promise<void> {
+    try {
+      const { data, error } = await this.supabaseClient
+        .from('usuarios')
+        .update({ estado: 'Inactivo' })
+        .eq('id_auth', userIdAuth)
+        .select();
+  
+      if (error) {
+        console.error('Error de Supabase al desactivar usuario:', error);
+        throw new Error(`Error al desactivar usuario: ${error.message}`);
+      }
+  
+      console.log('Usuario desactivado exitosamente:', data);
+    } catch (error) {
+      console.error('Error en deactivateUser:', error);
+      throw error;
+    }
+  }
+  
 }

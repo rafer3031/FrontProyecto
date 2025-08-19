@@ -1,0 +1,16 @@
+<h2 mat-dialog-title>
+    <mat-icon>delete_forever</mat-icon>
+    Eliminar usuario</h2>
+<mat-dialog-content>
+  <p>
+    ¿Estás seguro que deseas eliminar al usuario 
+    <strong>{{ data.nombres }} {{ data.apellidos }}</strong>?
+  </p>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-button (click)="dialogRef.close(true)">
+        Eliminar
+      </button>
+  <button mat-button (click)="dialogRef.close(false)">Cancelar</button>
+
+</mat-dialog-actions> 

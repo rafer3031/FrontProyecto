@@ -4,7 +4,7 @@
       #drawer
       [mode]="sidenavMode()"
       [opened]="sidenavOpened()"
-      class="w-64 bg-gray-800 border-r border-gray-700"
+      class="w-64 bg-gray-800  border-gray-700"
     >
       <div class="p-4">
         <side-nav-header />
@@ -20,12 +20,12 @@
     <!--Hasta aquí es el sidenav-->
 
     <!-- Contenido principal -->
-    <mat-drawer-content class="bg-black text-white">
+    <mat-drawer-content class=" ">
       <!-- Header -->
       <tool-bar />
 
       <!-- Contenido del dashboard -->
-      <div class="p-4 md:p-6 bg-black text-white">
+      <div class="p-4 md:p-6">
         <!-- Header -->
         <router-outlet />
       </div>

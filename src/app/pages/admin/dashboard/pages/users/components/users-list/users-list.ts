@@ -16,6 +16,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { UpdateUsers } from '../update-users/update-users';
 import { DialogLoading } from '../../../../../../../shared/components/dialog-loading/dialog-loading';
 import { DialogSuccess } from '../../../../../../../shared/components/dialog-success/dialog-success';
+import { DeleteUsers } from '../delete-users/delete-users';
 
 @Component({
   selector: 'app-users-list',
@@ -81,7 +82,37 @@ export class UsersList {
   }
 
   eliminarUsuario(user: UsersInterface) {
-    console.log('Eliminar usuario', user);
+    const dialogRef = this.dialog.open(DeleteUsers, {
+      width: '400px',
+      data: user,
+    });
+
+    dialogRef.afterClosed().subscribe(async (confirmado: boolean) => {
+      if (confirmado) {
+        const loadingRef = this.dialog.open(DialogLoading, {
+          disableClose: true,
+          data: { message: 'Eliminando usuario...' },
+        });
+
+        try {
+          await this.userService.deactivateUser(user.id_auth!);
+
+          loadingRef.close();
+
+          this.dialog.open(DialogSuccess, {
+            data: {
+              title: 'Usuario eliminado',
+              message: `El usuario ${user.nombres} ${user.apellidos} ha sido eliminado correctamente.`,
+            },
+          });
+
+          await this.loadUsers();
+        } catch (error) {
+          loadingRef.close();
+          console.error('Error eliminando usuario:', error);
+        }
+      }
+    });
   }
 
   ngOnInit() {
@@ -95,7 +126,8 @@ export class UsersList {
   async loadUsers() {
     const users = await this.userService.getUsers();
     if (users) {
-      this.dataSource.data = users;
+      // Solo usuarios activos
+      this.dataSource.data = users.filter((u) => u.estado === 'Activo');
     }
   }
 }

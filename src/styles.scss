@@ -2,77 +2,119 @@
 @use "./app/styles/tailwind.css";
 @use "@angular/material" as mat;
 @use "./app/styles/styles_theme-colors.scss" as xd;
+
 .error {
   @include mat.dialog-overrides(
     (
-      subhead-color: red,
+      subhead-color: #e63946,
+    )
+  );
+  @include mat.icon-overrides(
+    (
+      color: #e63946,
     )
   );
 }
 .success {
   @include mat.dialog-overrides(
     (
-      subhead-color: green,
+      subhead-color: #2eb67d,
     )
   );
 }
+
 .bg-orange-dark {
   @include mat.toolbar-overrides(
     (
-      container-background-color: gray,
+      container-background-color: #ff6b2c,
       container-text-color: white,
+    )
+  );
+}
+
+:root {
+  @include mat.toolbar-overrides(
+    (
+      container-background-color: #ffa94d,
+      container-text-color: #2c2c2c,
+      standard-height: 100px,
+      mobile-height: 100px
+    )
+  );
+}
+.logout-button {
+  @include mat.fab-overrides(
+    (
+      container-color: white,
+      foreground-color: #d93b30,
+      container-elevation-shadow: var(--mat-sys-level0),
     )
   );
 }
 :root {
   @include mat.sidenav-overrides(
     (
-      container-background-color: black,
+      container-background-color: #1e1e2f,
       container-text-color: white,
       container-shape: square,
     )
   );
 }
-.error {
-  @include mat.icon-overrides(
+:root {
+  @include mat.table-overrides(
     (
-      color: red,
+      background-color: white,
+      header-headline-color: #2c2c2c,
+      row-item-label-text-color: #2c2c2c,
+      row-item-outline-color: #f1f1f1,
     )
   );
 }
-.toolbar-user {
-  @include mat.toolbar-overrides((
-    container-background-color: map-get(xd.$primary-palette, 70),
-    container-text-color: black,
-    standard-height: 100px
-  ));
-}
-.logout-button{
-  @include mat.fab-overrides((
-    container-color: white,
-    foreground-color: black,
-    container-elevation-shadow: var(--mat-sys-level0)
-  ));
-
-}
-
 :root {
-  @include mat.table-overrides((
-    background-color: black,
-    header-headline-color: white,
-    row-item-label-text-color: white,
-    row-item-outline-color: white
-  ));
+  @include mat.paginator-overrides(
+    (
+      container-text-color: #2c2c2c,
+      container-background-color: #f9f9fb,
+    )
+  );
 }
-:root {
-  @include mat.paginator-overrides((
-    container-text-color: white,
-    container-background-color: black,
-  ));
+.active {
+  @include mat.list-overrides(
+    (
+      list-item-container-color: #ff6b2c,
+      list-item-selected-container-color: #ff6b2c,
+      list-item-label-text-color: white,
+      list-item-hover-label-text-color: white,
+      list-item-focus-label-text-color: white,
+      list-item-leading-icon-color: white,
+      list-item-hover-leading-icon-color: white,
+      list-item-trailing-icon-color: white,
+      list-item-hover-trailing-icon-color: white,
+
+      list-item-hover-state-layer-opacity: 0.1,
+      list-item-focus-state-layer-opacity: 0.1,
+      list-item-disabled-state-layer-opacity: 0,
+      list-item-hover-state-layer-color: #ffa94d,
+      list-item-focus-state-layer-color: #ffa94d,
+      list-item-disabled-state-layer-color: #6e6e6e,
+    )
+  );
 }
-html, body {
+
+.white {
+  @include mat.icon-overrides(
+    (
+      color: white,
+    )
+  );
+}
+
+html,
+body {
   margin: 0;
   padding: 0;
   height: 100%;
-  overflow-y: hidden; /* evita scroll vertical */
+  overflow-y: hidden;
+  background-color: #f9f9fb;
+  color: #2c2c2c;
 }

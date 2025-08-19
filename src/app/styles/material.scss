@@ -16,33 +16,3 @@ html {
 }
 
 
-.active {
-  @include mat.list-overrides(
-    (
-      list-item-container-color: blue,
-      list-item-selected-container-color: blue,
-      list-item-label-text-color: white,
-      list-item-hover-label-text-color: white,
-      list-item-focus-label-text-color: white,
-      list-item-leading-icon-color: white,
-      list-item-hover-leading-icon-color: white,
-      list-item-trailing-icon-color: white,
-      list-item-hover-trailing-icon-color: white,
-
-      list-item-hover-state-layer-opacity: 0,
-      list-item-focus-state-layer-opacity: 0,
-      list-item-disabled-state-layer-opacity: 0,
-      list-item-hover-state-layer-color: white,
-      list-item-focus-state-layer-color: white,
-      list-item-disabled-state-layer-color: white,
-    )
-  );
-}
-
-.white {
-  @include mat.icon-overrides(
-    (
-      color: white,
-    )
-  );
-}

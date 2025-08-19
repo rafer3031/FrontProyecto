@@ -1,3 +1,10 @@
+.white {
+  color: white !important;
+}
+
+.red {
+  color: #f44336 !important;
+}
 
 .acciones-col button {
   transition: transform 0.15s ease, color 0.15s ease;
@@ -7,26 +14,10 @@
   transform: scale(1.15);
 }
 
-.acciones-col button.white:hover mat-icon {
-  color: #90caf9;
+.acciones-col button:hover .white {
+  color: #90caf9 !important;
 }
 
-.acciones-col button.red:hover mat-icon {
-  color: #f44336;
-}
-::ng-deep .mat-mdc-paginator .mat-mdc-select-value {
-  color: white !important;
-}
-
-::ng-deep .mat-mdc-paginator .mat-mdc-select-arrow {
-  color: white !important;
-}
-
-::ng-deep .mat-mdc-option {
-  color: white !important;
-  background-color: #333;
-}
-
-::ng-deep .mat-mdc-option:hover {
-  background-color: #555;
+.acciones-col button:hover .red {
+  color: #ff7961 !important;
 }
