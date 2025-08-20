@@ -1,26 +1,18 @@
-import {
-  Component,
-  inject,
-  ViewChild,
-  OnInit,
-  AfterViewInit,
-} from '@angular/core';
+import { Component, inject, ViewChild } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDialog } from '@angular/material/dialog';
+import { MatIconModule } from '@angular/material/icon';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { UsersInterface } from '../../../../../../../shared/interfaces/users/user.interface';
-import { UsersService } from '../../services/users.service';
-import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
-import { MatTooltipModule } from '@angular/material/tooltip';
-import { MatDialog } from '@angular/material/dialog';
-import { UpdateUsers } from '../update-users/update-users';
+import { UpdateDrivers } from '../update-drivers/update-drivers';
 import { DialogLoading } from '../../../../../../../shared/components/dialog-loading/dialog-loading';
 import { DialogSuccess } from '../../../../../../../shared/components/dialog-success/dialog-success';
-import { DeleteUsers } from '../delete-users/delete-users';
+import { DriverService } from '../../services/drivers.service';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
-  selector: 'app-users-list',
-  standalone: true,
+  selector: 'app-list-drivers',
   imports: [
     MatTableModule,
     MatPaginatorModule,
@@ -28,20 +20,18 @@ import { DeleteUsers } from '../delete-users/delete-users';
     MatButtonModule,
     MatTooltipModule,
   ],
-  templateUrl: './users-list.html',
-  styleUrl: './users-list.scss',
+  templateUrl: './list-drivers.html',
+  styleUrl: './list-drivers.scss',
 })
-export class UsersList {
-  private userService = inject(UsersService);
+export class ListDrivers {
   private dialog = inject(MatDialog);
-
+  private driversService = inject(DriverService);
   displayedColumns: string[] = [
     'id',
     'nombres',
     'apellidos',
-    'email',
-    'rol',
-    'numero_ficha',
+    'celular',
+    'correo',
     'acciones',
   ];
 
@@ -49,7 +39,7 @@ export class UsersList {
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   editarUsuario(user: UsersInterface) {
-    const dialogRef = this.dialog.open(UpdateUsers, {
+    const dialogRef = this.dialog.open(UpdateDrivers, {
       width: '500px',
       data: user,
     });
@@ -64,7 +54,7 @@ export class UsersList {
           });
 
           try {
-            await this.userService.updateUserInfo(user.id_auth!, formData);
+            await this.driversService.updateDriverInfo(user.id_auth!, formData);
             loadingRef.close();
             this.dialog.open(DialogSuccess, {
               data: {
@@ -80,41 +70,6 @@ export class UsersList {
         }
       });
   }
-
-  eliminarUsuario(user: UsersInterface) {
-    const dialogRef = this.dialog.open(DeleteUsers, {
-      width: '400px',
-      data: user,
-    });
-
-    dialogRef.afterClosed().subscribe(async (confirmado: boolean) => {
-      if (confirmado) {
-        const loadingRef = this.dialog.open(DialogLoading, {
-          disableClose: true,
-          data: { message: 'Eliminando usuario...' },
-        });
-
-        try {
-          await this.userService.deactivateUser(user.id_auth!);
-
-          loadingRef.close();
-
-          this.dialog.open(DialogSuccess, {
-            data: {
-              title: 'Usuario eliminado',
-              message: `El usuario ${user.nombres} ${user.apellidos} ha sido eliminado correctamente.`,
-            },
-          });
-
-          await this.loadUsers();
-        } catch (error) {
-          loadingRef.close();
-          console.error('Error eliminando usuario:', error);
-        }
-      }
-    });
-  }
-
   ngOnInit() {
     this.loadUsers();
   }
@@ -124,7 +79,7 @@ export class UsersList {
   }
 
   async loadUsers() {
-    const users = await this.userService.getUsers();
+    const users = await this.driversService.getDrivers();
     if (users) {
       this.dataSource.data = users.filter((u) => u.estado === 'Activo');
     }

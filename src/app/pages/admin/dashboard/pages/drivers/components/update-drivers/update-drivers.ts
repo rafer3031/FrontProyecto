@@ -4,6 +4,8 @@ import {
   MatDialogModule,
   MatDialogRef,
 } from '@angular/material/dialog';
+import { UpdateUsers } from '../../../users/components/update-users/update-users';
+import { UsersInterface } from '../../../../../../../shared/interfaces/users/user.interface';
 import {
   FormBuilder,
   FormControl,
@@ -11,16 +13,14 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { MatButtonModule } from '@angular/material/button';
+import { UsersService } from '../../../users/services/users.service';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { UsersInterface } from '../../../../../../../shared/interfaces/users/user.interface';
-import { UsersService } from '../../services/users.service';
+import { MatButtonModule } from '@angular/material/button';
+import { MatInputModule } from '@angular/material/input';
 
 @Component({
-  selector: 'app-update-users',
-  standalone: true,
+  selector: 'app-update-drivers',
   imports: [
     MatDialogModule,
     FormsModule,
@@ -30,10 +30,10 @@ import { UsersService } from '../../services/users.service';
     MatInputModule,
     MatSelectModule,
   ],
-  templateUrl: './update-users.html',
-  styleUrl: './update-users.scss',
+  templateUrl: './update-drivers.html',
+  styleUrl: './update-drivers.scss',
 })
-export class UpdateUsers {
+export class UpdateDrivers {
   readonly dialogRef = inject(MatDialogRef<UpdateUsers>);
   readonly data = inject<UsersInterface>(MAT_DIALOG_DATA);
   private fb = inject(FormBuilder);
@@ -46,7 +46,6 @@ export class UpdateUsers {
     apellidos: new FormControl('', Validators.required),
     ci: new FormControl('', Validators.required),
     numero_celular: new FormControl('', Validators.required),
-    correo_electronico: new FormControl('', Validators.required),
   });
 
   constructor() {
@@ -62,6 +61,8 @@ export class UpdateUsers {
       .then(() => {
         this.dialogRef.close(this.form.value);
       })
-      .catch((err) => console.error('Error actualizando usuario:', err));
+      .catch((err) =>
+        console.error('Error actualizando infomación del conductor:', err)
+      );
   }
 }

@@ -1,1 +1,14 @@
-<p>drivers works!</p>
+<section class="flex flex-row justify-between">
+  <h1 class="text-4xl mt-11 font-bold">Lista de conductores</h1>
+  <button
+    matFab
+    extended
+    class="mx-10 my-10"
+    (click)="openAddDriversDialog()"
+  >
+    <mat-icon>add</mat-icon>
+    Agregar Conductor
+  </button>
+</section>
+
+<app-list-drivers/>

@@ -72,7 +72,7 @@ export class UsersService {
           numero_ficha: formData.numero_ficha,
           destino_origen: formData.destino_origen,
         })
-        .eq('id_auth', userIdAuth) // aquí ya no usamos el usuario logueado
+        .eq('id_auth', userIdAuth) 
         .select();
 
       if (error) {
