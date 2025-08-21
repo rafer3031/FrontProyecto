@@ -1,1 +1,163 @@
-<p>add-drivers works!</p>
+<div class="dialog-container">
+  <div class="dialog-header">
+    <mat-icon
+      class="login-icon"
+      aria-hidden="false"
+      aria-label="login icon"
+      fontIcon="account_circle"
+    ></mat-icon>
+    <h2 mat-dialog-title class="text-2xl font-bold mb-2">
+      Creación de un nuevo conductor
+    </h2>
+    <p class="text-sm text-gray-500 mb-4 text-center">
+      Registro de conductor con correo, contraseña y datos personales
+    </p>
+  </div>
+
+  <mat-dialog-content class="dialog-content">
+    <form [formGroup]="form" (ngSubmit)="submit()">
+      <!-- Fila 1: Nombres + Apellidos -->
+      <div class="form-row">
+        <mat-form-field>
+          <mat-label>Nombres</mat-label>
+          <input
+            matInput
+            #nombres
+            maxlength="60"
+            placeholder="Ej: Juan Carlos"
+            formControlName="nombres"
+            required
+          />
+          @if (form.controls.nombres.errors?.['required'] && nombres.value ==
+          '') {
+          <mat-error>Los nombres son obligatorios</mat-error>
+          }
+          <mat-hint align="end">{{ nombres.value.length }} / 60</mat-hint>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Apellidos</mat-label>
+          <input
+            matInput
+            #apellidos
+            maxlength="60"
+            placeholder="Ej: Pérez Gómez"
+            formControlName="apellidos"
+            required
+          />
+          @if (form.controls.apellidos.errors?.['required'] && apellidos.value
+          == '') {
+          <mat-error>Los apellidos son obligatorios</mat-error>
+          }
+          <mat-hint align="end">{{ apellidos.value.length }} / 60</mat-hint>
+        </mat-form-field>
+      </div>
+
+      <!-- Fila 2: CI + Celular -->
+      <div class="form-row">
+        <mat-form-field>
+          <mat-label>Cédula de Identidad</mat-label>
+          <input
+            matInput
+            #ci
+            maxlength="15"
+            placeholder="Ej: 12345678"
+            formControlName="ci"
+            required
+          />
+          @if (form.controls.ci.errors?.['required'] && ci.value == '') {
+          <mat-error>El CI es obligatorio</mat-error>
+          }
+          <mat-hint align="end">{{ ci.value.length }} / 15</mat-hint>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Número de celular</mat-label>
+          <input
+            matInput
+            #numero_celular
+            maxlength="15"
+            placeholder="Ej: 76543210"
+            formControlName="numero_celular"
+            required
+          />
+          @if (form.controls.numero_celular.errors?.['required'] &&
+          numero_celular.value == '') {
+          <mat-error>El número de celular es obligatorio</mat-error>
+          }
+          <mat-hint align="end"
+            >{{ numero_celular.value.length }} / 15</mat-hint
+          >
+        </mat-form-field>
+      </div>
+
+      <!-- Fila 3: Email -->
+      <div class="form-row">
+        <mat-form-field>
+          <mat-label>Ingrese su E-mail</mat-label>
+          <input
+            type="email"
+            matInput
+            #email
+            maxlength="45"
+            placeholder="ejemplo@outlook.com"
+            formControlName="email"
+            required
+          />
+          @if (form.controls.email.errors?.['required'] && email.value == '') {
+          <mat-error>El correo es obligatorio</mat-error>
+          } @if (form.controls.email.errors?.['email']) {
+          <mat-error>Ingrese un correo válido</mat-error>
+          }
+          <mat-hint align="end">{{ email.value.length }} / 45</mat-hint>
+        </mat-form-field>
+      </div>
+
+      <mat-form-field>
+        <mat-label>Ingrese su contraseña</mat-label>
+        <input
+          maxlength="45"
+          #password
+          matInput
+          formControlName="password"
+          [type]="hide() ? 'password' : 'text'"
+          required
+        />
+        <button
+          type="button"
+          matIconButton
+          matSuffix
+          (click)="clickEvent($event)"
+          [attr.aria-label]="'Hide password'"
+          [attr.aria-pressed]="hide()"
+        >
+          <mat-icon>{{ hide() ? "visibility_off" : "visibility" }}</mat-icon>
+        </button>
+        @if (form.controls.password.errors?.['required'] && password.value ==
+        '') {
+        <mat-error>La contraseña es obligatoria</mat-error>
+        } @if (form.controls.password.errors?.['minlength'] && password.value !=
+        '') {
+        <mat-error>La contraseña tiene que ser mayor a 6 caracteres</mat-error>
+        }
+        <mat-hint align="end">{{ password.value.length }} / 45</mat-hint>
+      </mat-form-field>
+    </form>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end" class="dialog-actions">
+    <button mat-button type="button" (click)="onCancel()" class="cancel-button">
+      Cancelar
+    </button>
+    <button
+      mat-raised-button
+      color="primary"
+      type="button"
+      (click)="submit()"
+      [disabled]="form.invalid"
+      class="submit-button"
+    >
+      Registrar datos
+    </button>
+  </mat-dialog-actions>
+</div>

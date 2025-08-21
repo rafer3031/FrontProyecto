@@ -18,7 +18,6 @@ import { AuthService } from '../../../../../../../shared/auth/auth.service';
 import { DialogError } from '../../../../../../../shared/components/dialog-error/dialog-error';
 import { DialogLoading } from '../../../../../../../shared/components/dialog-loading/dialog-loading';
 import { DialogSuccess } from '../../../../../../../shared/components/dialog-success/dialog-success';
-import { Dialog } from '../../../../../../public/login/components/dialog/dialog';
 
 interface SignUpForm {
   email: FormControl<null | string>;
@@ -45,35 +44,10 @@ export class AddUserDialog {
   private dialogRef = inject(MatDialogRef<AddUserDialog>);
   hide = signal(true);
   hideConfirmPassword = signal(true);
-  userRole = signal<string | null>(null);
-
-  clickEvent(event: MouseEvent) {
-    this.hide.set(!this.hide());
-    event.stopPropagation();
-  }
-
-  clickEventConfirm(event: MouseEvent) {
-    this.hideConfirmPassword.set(!this.hideConfirmPassword());
-    event.stopPropagation();
-  }
 
   private _formBuilder = inject(FormBuilder);
   private dialog = inject(MatDialog);
-
-  private passwordMatchValidator(
-    group: AbstractControl
-  ): ValidationErrors | null {
-    const password = group.get('password')?.value;
-    const confirmPassword = group.get('confirmPassword')?.value;
-
-    if (!password || !confirmPassword) {
-      return null;
-    }
-
-    return password === confirmPassword ? null : { passwordMismatch: true };
-  }
-
-  authService = inject(AuthService);
+  private authService = inject(AuthService);
 
   form = this._formBuilder.group<SignUpForm>(
     {
@@ -90,6 +64,28 @@ export class AddUserDialog {
     { validators: this.passwordMatchValidator }
   );
 
+  private passwordMatchValidator(
+    group: AbstractControl
+  ): ValidationErrors | null {
+    const password = group.get('password')?.value;
+    const confirmPassword = group.get('confirmPassword')?.value;
+
+    if (!password || !confirmPassword) {
+      return null;
+    }
+    return password === confirmPassword ? null : { passwordMismatch: true };
+  }
+
+  clickEvent(event: MouseEvent) {
+    this.hide.set(!this.hide());
+    event.stopPropagation();
+  }
+
+  clickEventConfirm(event: MouseEvent) {
+    this.hideConfirmPassword.set(!this.hideConfirmPassword());
+    event.stopPropagation();
+  }
+
   onCancel() {
     this.dialogRef.close(false);
   }
@@ -97,73 +93,55 @@ export class AddUserDialog {
   async submit() {
     if (this.form.invalid) return;
 
-    const roleDialogRef = this.dialog.open(Dialog, {
-      data: { message: 'Seleccione su función en la empresa' },
-      width: '450px',
+    // Rol fijo: 2
+    localStorage.setItem('pendingUserRole', '2');
+
+    const loadingRef = this.dialog.open(DialogLoading, {
+      data: { message: 'Registrando usuario...' },
+      width: '400px',
       disableClose: true,
+      panelClass: 'loading-dialog',
     });
 
-    roleDialogRef.afterClosed().subscribe(async (selectedRole) => {
-      if (!selectedRole) return;
+    try {
+      await this.performRegistration();
 
-      this.userRole.set(selectedRole);
-      localStorage.setItem('pendingUserRole', selectedRole);
+      loadingRef.close();
 
-      const loadingRef = this.dialog.open(DialogLoading, {
-        data: { message: 'Registrando usuario...' },
-        width: '400px',
-        disableClose: true,
-        panelClass: 'loading-dialog',
+      this.dialog.open(DialogSuccess, {
+        data: {
+          tittle: 'Registro exitoso',
+          message: 'Por favor revise su correo electrónico para confirmar su cuenta.',
+        },
+        width: '450px',
+      }).afterClosed().subscribe(() => {
+        this.form.reset();
+        this.dialogRef.close(true);
       });
+    } catch (error) {
+      loadingRef.close();
 
-      try {
-        await this.performRegistration(selectedRole);
+      let message = 'Error durante el registro. Por favor intenta nuevamente.';
 
-        loadingRef.close();
-
-        this.dialog
-          .open(DialogSuccess, {
-            data: {
-              tittle: 'Registro exitoso',
-              message:
-                'Por favor revise su correo electrónico para confirmar su cuenta.',
-
-            },
-            width: '450px',
-            disableClose: false,
-          })
-          .afterClosed()
-          .subscribe(() => {
-            this.form.reset();
-            this.dialogRef.close(true);
-          });
-      } catch (error) {
-        loadingRef.close();
-
-        let message =
-          'Error durante el registro. Por favor intenta nuevamente.';
-
-        if (error instanceof Error) {
-          if (error.message?.includes('For security purposes')) {
-            message = 'Debes esperar 1 minuto antes de hacer otra solicitud.';
-          } else {
-            message = error.message;
-          }
-          console.error(error.message);
+      if (error instanceof Error) {
+        if (error.message?.includes('For security purposes')) {
+          message = 'Debes esperar 1 minuto antes de hacer otra solicitud.';
         } else {
-          console.error('Error desconocido:', error);
+          message = error.message;
         }
-
-        this.dialog.open(DialogError, {
-          data: { message },
-          width: '400px',
-          disableClose: false,
-        });
+        console.error(error.message);
+      } else {
+        console.error('Error desconocido:', error);
       }
-    });
+
+      this.dialog.open(DialogError, {
+        data: { message },
+        width: '400px',
+      });
+    }
   }
 
-  private async performRegistration(role: string): Promise<void> {
+  private async performRegistration(): Promise<void> {
     const authResponse = await this.authService.signUp({
       email: this.form.value.email ?? '',
       password: this.form.value.password ?? '',

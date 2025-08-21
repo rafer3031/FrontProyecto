@@ -16,7 +16,7 @@ export class Drivers {
 
   openAddDriversDialog() {
     const dialogRef = this.dialog.open(AddDrivers, {
-      width: '500px',
+      width: '600px',
       disableClose: true,
       panelClass: 'custom-dialog-container',
     });

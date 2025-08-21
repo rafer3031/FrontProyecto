@@ -20,7 +20,6 @@ import { UsersService } from '../../services/users.service';
 
 @Component({
   selector: 'app-update-users',
-  standalone: true,
   imports: [
     MatDialogModule,
     FormsModule,

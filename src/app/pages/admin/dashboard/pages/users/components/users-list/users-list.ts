@@ -20,7 +20,6 @@ import { DeleteUsers } from '../delete-users/delete-users';
 
 @Component({
   selector: 'app-users-list',
-  standalone: true,
   imports: [
     MatTableModule,
     MatPaginatorModule,

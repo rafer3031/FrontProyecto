@@ -1,13 +1,16 @@
 import { computed, inject, Injectable, signal } from '@angular/core';
 import { SupabaseService } from '../../../../../../shared/services/supabase.service';
 import { AuthService } from '../../../../../../shared/auth/auth.service';
-import { UsersInterface, UserState } from '../../../../../../shared/interfaces/users/user.interface';
+import {
+  UsersInterface,
+  UserState,
+} from '../../../../../../shared/interfaces/users/user.interface';
 
 @Injectable({ providedIn: 'root' })
 export class DriverService {
   supabaseClient = inject(SupabaseService).supabase;
   authService = inject(AuthService);
-    state = signal<UserState>({
+  state = signal<UserState>({
     data: [],
     loading: false,
     error: false,
@@ -27,9 +30,6 @@ export class DriverService {
           apellidos: formData.apellidos,
           ci: formData.ci,
           numero_celular: formData.numero_celular,
-          operacion: formData.operacion,
-          numero_ficha: formData.numero_ficha,
-          destino_origen: formData.destino_origen,
         })
         .eq('id_auth', userIdAuth)
         .select();
@@ -78,6 +78,80 @@ export class DriverService {
         ...state,
         loading: false,
       }));
+    }
+  }
+  async createDriver(formData: Partial<UsersInterface>): Promise<void> {
+    try {
+      if (
+        !formData.id_auth ||
+        !formData.nombres ||
+        !formData.apellidos ||
+        !formData.ci
+      ) {
+        throw new Error(
+          'Todos los campos son requeridos para crear el conductor.'
+        );
+      }
+
+      const { data: existingUser, error: checkError } =
+        await this.supabaseClient
+          .from('usuarios')
+          .select('id_auth, ci')
+          .eq('id_auth', formData.id_auth)
+          .single();
+
+      if (checkError && checkError.code !== 'PGRST116') {
+        console.error('Error al verificar usuario existente:', checkError);
+        throw new Error('Error al verificar existencia del usuario.');
+      }
+
+      if (existingUser && existingUser.ci && existingUser.ci !== formData.ci) {
+        throw new Error(
+          'La cédula de identidad ya está registrada en otro usuario.'
+        );
+      }
+
+      const { data, error } = await this.supabaseClient
+        .from('usuarios')
+        .upsert(
+          {
+            id_auth: formData.id_auth,
+            nombres: formData.nombres.trim(),
+            apellidos: formData.apellidos.trim(),
+            ci: formData.ci.trim(),
+            numero_celular: formData.numero_celular?.trim(),
+            id_rol: formData.id_rol || 3,
+            estado: formData.estado || 'Activo',
+          },
+          { onConflict: 'id_auth' } 
+        )
+        .select();
+
+      if (error) {
+        console.error(
+          'Error de Supabase al registrar/actualizar conductor:',
+          error
+        );
+        throw new Error(`Error al registrar conductor: ${error.message}`);
+      }
+
+      if (!data || data.length === 0) {
+        throw new Error(
+          'No se pudo crear o actualizar el registro del conductor.'
+        );
+      }
+
+      console.log('Conductor registrado/actualizado exitosamente:', data);
+
+      this.state.update((state) => ({
+        ...state,
+        data: [...state.data, ...data],
+      }));
+    } catch (error) {
+      console.error('Error en createDriver:', error);
+      throw error instanceof Error
+        ? error
+        : new Error('Error desconocido al crear el conductor.');
     }
   }
 }
