@@ -1,4 +1,4 @@
-import { Component, inject, ViewChild } from '@angular/core';
+import { Component, effect, inject, ViewChild } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
@@ -38,7 +38,11 @@ export class ListDrivers {
 
   dataSource = new MatTableDataSource<UsersInterface>([]);
 
-
+  constructor(){
+    effect(() => {
+      this.dataSource.data = this.driversService.users() 
+    })
+  }
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   editarUsuario(user: UsersInterface) {
     const dialogRef = this.dialog.open(UpdateDrivers, {
