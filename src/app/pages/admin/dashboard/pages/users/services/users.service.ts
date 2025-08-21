@@ -30,7 +30,7 @@ export class UsersService {
 
       const { data } = await this.supabaseClient
         .from('usuarios')
-        .select()
+        .select('*')
         .eq('id_rol', 2)
         .eq('estado', 'Activo')
         .overrideTypes<UsersInterface[]>();
@@ -68,8 +68,8 @@ export class UsersService {
           apellidos: formData.apellidos,
           ci: formData.ci,
           numero_celular: formData.numero_celular,
-          operacion: formData.operacion,
-          numero_ficha: formData.numero_ficha,
+          operacion: formData.operacion ?? null,
+          numero_ficha: formData.numero_ficha ?? null,
           destino_origen: formData.destino_origen,
         })
         .eq('id_auth', userIdAuth) 

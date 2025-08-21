@@ -61,20 +61,7 @@ export class AddUserDialog {
       ]),
       confirmPassword: this._formBuilder.control(null, [Validators.required]),
     },
-    { validators: this.passwordMatchValidator }
   );
-
-  private passwordMatchValidator(
-    group: AbstractControl
-  ): ValidationErrors | null {
-    const password = group.get('password')?.value;
-    const confirmPassword = group.get('confirmPassword')?.value;
-
-    if (!password || !confirmPassword) {
-      return null;
-    }
-    return password === confirmPassword ? null : { passwordMismatch: true };
-  }
 
   clickEvent(event: MouseEvent) {
     this.hide.set(!this.hide());
@@ -93,7 +80,6 @@ export class AddUserDialog {
   async submit() {
     if (this.form.invalid) return;
 
-    // Rol fijo: 2
     localStorage.setItem('pendingUserRole', '2');
 
     const loadingRef = this.dialog.open(DialogLoading, {

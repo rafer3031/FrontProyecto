@@ -22,7 +22,7 @@ import { AuthService } from '../../../../../../../shared/auth/auth.service';
 import { DialogError } from '../../../../../../../shared/components/dialog-error/dialog-error';
 import { DialogLoading } from '../../../../../../../shared/components/dialog-loading/dialog-loading';
 import { DialogSuccess } from '../../../../../../../shared/components/dialog-success/dialog-success';
-import { DriverService } from '../../services/drivers.service';
+import { AdminService } from '../../services/admins.service';
 
 interface SignUpForm {
   nombres: FormControl<null | string>;
@@ -34,7 +34,7 @@ interface SignUpForm {
 }
 
 @Component({
-  selector: 'add-drivers-dialog',
+  selector: 'add-admin-dialog',
   imports: [
     MatCardModule,
     MatButtonModule,
@@ -45,50 +45,46 @@ interface SignUpForm {
     ReactiveFormsModule,
     MatDialogModule,
   ],
-  templateUrl: './add-drivers.html',
-  styleUrl: './add-drivers.scss',
+  templateUrl: './add-admin.html',
+  styleUrl: './add-admin.scss',
 })
-export class AddDrivers {
-  private dialogRef = inject(MatDialogRef<AddDrivers>);
+export class AddAdmin {
+  private dialogRef = inject(MatDialogRef<AddAdmin>);
   hide = signal(true);
   hideConfirmPassword = signal(true);
-  private driversService = inject(DriverService);
+  private adminService = inject(AdminService);
   private _formBuilder = inject(FormBuilder);
   private dialog = inject(MatDialog);
   private authService = inject(AuthService);
 
-  form = this._formBuilder.group<SignUpForm>(
-    {
-      nombres: this._formBuilder.control(null, [
-        Validators.required,
-        Validators.maxLength(60),
-      ]),
-      apellidos: this._formBuilder.control(null, [
-        Validators.required,
-        Validators.maxLength(60),
-      ]),
-      ci: this._formBuilder.control(null, [
-        Validators.required,
-        Validators.maxLength(15),
-      ]),
-      numero_celular: this._formBuilder.control(null, [
-        Validators.required,
-        Validators.maxLength(15),
-      ]),
-      email: this._formBuilder.control(null, [
-        Validators.required,
-        Validators.email,
-        Validators.maxLength(45),
-      ]),
-      password: this._formBuilder.control(null, [
-        Validators.required,
-        Validators.minLength(6),
-        Validators.maxLength(45),
-      ]),
-
-    }
-  );
-
+  form = this._formBuilder.group<SignUpForm>({
+    nombres: this._formBuilder.control(null, [
+      Validators.required,
+      Validators.maxLength(60),
+    ]),
+    apellidos: this._formBuilder.control(null, [
+      Validators.required,
+      Validators.maxLength(60),
+    ]),
+    ci: this._formBuilder.control(null, [
+      Validators.required,
+      Validators.maxLength(15),
+    ]),
+    numero_celular: this._formBuilder.control(null, [
+      Validators.required,
+      Validators.maxLength(15),
+    ]),
+    email: this._formBuilder.control(null, [
+      Validators.required,
+      Validators.email,
+      Validators.maxLength(45),
+    ]),
+    password: this._formBuilder.control(null, [
+      Validators.required,
+      Validators.minLength(6),
+      Validators.maxLength(45),
+    ]),
+  });
 
   clickEvent(event: MouseEvent) {
     this.hide.set(!this.hide());
@@ -180,15 +176,14 @@ export class AddDrivers {
         'No se pudo obtener el usuario después del registro de autenticación.'
       );
     }
-    await this.driversService.createDriver({
+    await this.adminService.createAdmin({
       id_auth: user.id,
       nombres: this.form.value.nombres ?? '',
       apellidos: this.form.value.apellidos ?? '',
       ci: this.form.value.ci ?? '',
       numero_celular: this.form.value.numero_celular ?? '',
-      id_rol: 3, 
+      id_rol: 1,
       estado: 'Activo',
     });
-    
   }
 }

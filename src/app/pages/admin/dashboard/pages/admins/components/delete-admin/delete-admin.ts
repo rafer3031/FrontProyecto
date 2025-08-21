@@ -5,12 +5,12 @@ import { UsersInterface } from '../../../../../../../shared/interfaces/users/use
 import { MatIconModule } from '@angular/material/icon';
 
 @Component({
-  selector: 'app-delete-drivers',
+  selector: 'app-delete-admin',
   imports: [MatDialogModule, MatButtonModule, MatIconModule],
-  templateUrl: './delete-drivers.html',
-  styleUrl: './delete-drivers.scss'
+  templateUrl: './delete-admin.html',
+  styleUrl: './delete-admin.scss'
 })
-export class DeleteDrivers {
-  readonly dialogRef = inject(MatDialogRef<DeleteDrivers>);
+export class DeleteAdmin {
+  readonly dialogRef = inject(MatDialogRef<DeleteAdmin>);
   readonly data = inject<UsersInterface>(MAT_DIALOG_DATA);
 }

@@ -7,7 +7,7 @@ import {
 } from '../../../../../../shared/interfaces/users/user.interface';
 
 @Injectable({ providedIn: 'root' })
-export class DriverService {
+export class AdminService {
   supabaseClient = inject(SupabaseService).supabase;
   authService = inject(AuthService);
   state = signal<UserState>({
@@ -18,7 +18,7 @@ export class DriverService {
   users = computed(() => this.state().data);
   loading = computed(() => this.state().loading);
   error = computed(() => this.state().error);
-  async updateDriverInfo(
+  async updateAdminInfo(
     userIdAuth: string,
     formData: Partial<UsersInterface>
   ): Promise<void> {
@@ -45,7 +45,7 @@ export class DriverService {
       throw error;
     }
   }
-  async getDrivers() {
+  async getAdmins() {
     try {
       this.state.update((state) => ({
         ...state,
@@ -55,7 +55,7 @@ export class DriverService {
       const { data } = await this.supabaseClient
         .from('usuarios')
         .select()
-        .eq('id_rol', 3)
+        .eq('id_rol', 1)
         .eq('estado', 'Activo')
         .overrideTypes<UsersInterface[]>();
 
@@ -80,7 +80,7 @@ export class DriverService {
       }));
     }
   }
-  async createDriver(formData: Partial<UsersInterface>): Promise<void> {
+  async createAdmin(formData: Partial<UsersInterface>): Promise<void> {
     try {
       if (
         !formData.id_auth ||
@@ -89,7 +89,7 @@ export class DriverService {
         !formData.ci
       ) {
         throw new Error(
-          'Todos los campos son requeridos para crear el conductor.'
+          'Todos los campos son requeridos para crear el administrador.'
         );
       }
 
@@ -120,7 +120,7 @@ export class DriverService {
             apellidos: formData.apellidos.trim(),
             ci: formData.ci.trim(),
             numero_celular: formData.numero_celular?.trim(),
-            id_rol: formData.id_rol || 3,
+            id_rol: formData.id_rol || 1,
             estado: formData.estado || 'Activo',
           },
           { onConflict: 'id_auth' }
@@ -129,19 +129,19 @@ export class DriverService {
 
       if (error) {
         console.error(
-          'Error de Supabase al registrar/actualizar conductor:',
+          'Error de Supabase al registrar/actualizar administrador:',
           error
         );
-        throw new Error(`Error al registrar conductor: ${error.message}`);
+        throw new Error(`Error al registrar administrador: ${error.message}`);
       }
 
       if (!data || data.length === 0) {
         throw new Error(
-          'No se pudo crear o actualizar el registro del conductor.'
+          'No se pudo crear o actualizar el registro del administrador.'
         );
       }
 
-      console.log('Conductor registrado/actualizado exitosamente:', data);
+      console.log('Administrador creado/actualizado exitosamente:', data);
 
       this.state.update((state) => ({
         ...state,
@@ -151,10 +151,10 @@ export class DriverService {
       console.error('Error en createDriver:', error);
       throw error instanceof Error
         ? error
-        : new Error('Error desconocido al crear el conductor.');
+        : new Error('Error desconocido al crear el administrador.');
     }
   }
-  async deactivateDriver(userIdAuth: string): Promise<void> {
+  async deactivateAdmin(userIdAuth: string): Promise<void> {
     try {
       const { data, error } = await this.supabaseClient
         .from('usuarios')

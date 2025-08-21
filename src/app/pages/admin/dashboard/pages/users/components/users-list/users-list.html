@@ -13,10 +13,21 @@
       <td mat-cell *matCellDef="let user">{{ user.apellidos }}</td>
     </ng-container>
     <ng-container matColumnDef="email">
-      <th mat-header-cell *matHeaderCellDef>Email</th>
+      <th mat-header-cell *matHeaderCellDef>Correo electrónico</th>
       <td mat-cell *matCellDef="let user">{{ user.correo_electronico }}</td>
     </ng-container>
-
+    <ng-container matColumnDef="numero_celular">
+      <th mat-header-cell *matHeaderCellDef>Número Celular</th>
+      <td mat-cell *matCellDef="let user">
+        {{ user.numero_celular }}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="destino_origen">
+      <th mat-header-cell *matHeaderCellDef>Destino Origen</th>
+      <td mat-cell *matCellDef="let user">
+        {{ user.destino_origen }}
+      </td>
+    </ng-container>
     <ng-container matColumnDef="rol">
       <th mat-header-cell *matHeaderCellDef>Rol</th>
       <td mat-cell *matCellDef="let user">
@@ -38,7 +49,7 @@
           matTooltip="Editar Usuario"
           (click)="editarUsuario(user)"
         >
-          <mat-icon >edit</mat-icon>
+          <mat-icon>edit</mat-icon>
         </button>
 
         <button
@@ -47,7 +58,7 @@
           matTooltip="Eliminar Usuario"
           (click)="eliminarUsuario(user)"
         >
-          <mat-icon >delete</mat-icon>
+          <mat-icon>delete</mat-icon>
         </button>
       </td>
     </ng-container>

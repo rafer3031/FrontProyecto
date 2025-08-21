@@ -10,6 +10,7 @@ import { DialogLoading } from '../../../../../../../shared/components/dialog-loa
 import { DialogSuccess } from '../../../../../../../shared/components/dialog-success/dialog-success';
 import { DriverService } from '../../services/drivers.service';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { DeleteDrivers } from '../delete-drivers/delete-drivers';
 
 @Component({
   selector: 'app-list-drivers',
@@ -36,6 +37,7 @@ export class ListDrivers {
   ];
 
   dataSource = new MatTableDataSource<UsersInterface>([]);
+
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   editarUsuario(user: UsersInterface) {
@@ -70,6 +72,39 @@ export class ListDrivers {
         }
       });
   }
+    eliminarUsuario(user: UsersInterface) {
+      const dialogRef = this.dialog.open(DeleteDrivers, {
+        width: '400px',
+        data: user,
+      });
+  
+      dialogRef.afterClosed().subscribe(async (confirmado: boolean) => {
+        if (confirmado) {
+          const loadingRef = this.dialog.open(DialogLoading, {
+            disableClose: true,
+            data: { message: 'Eliminando usuario...' },
+          });
+  
+          try {
+            await this.driversService.deactivateDriver(user.id_auth!);
+  
+            loadingRef.close();
+  
+            this.dialog.open(DialogSuccess, {
+              data: {
+                title: 'Usuario eliminado',
+                message: `El usuario ${user.nombres} ${user.apellidos} ha sido eliminado correctamente.`,
+              },
+            });
+  
+            await this.loadUsers();
+          } catch (error) {
+            loadingRef.close();
+            console.error('Error eliminando usuario:', error);
+          }
+        }
+      });
+    }
   ngOnInit() {
     this.loadUsers();
   }
